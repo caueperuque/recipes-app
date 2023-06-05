@@ -1,1 +1,2 @@
 export const ACTION_TESTE = 'ACTION_TESTE';
+export const INITIAL_STATE = 'INITIAL_STATE';
