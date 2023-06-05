@@ -7,30 +7,36 @@ class SearchBar extends React.Component {
     nameSearch: 'name',
     firstLetterSearch: 'firstLetter',
     searchInput: '',
+    valueRadio: '',
   };
 
-  fetchAPI = async ({ target }) => {
-    const { name, value } = target;
-    const { searchInput } = this.state;
-    if (name === 'radioInput' && value === 'ingredient') {
+  fetchAPI = async (e) => {
+    e.preventDefault();
+    const { name } = e.target;
+    const { searchInput, valueRadio } = this.state;
+    // console.log(valueRadio);
+    if (valueRadio === 'ingredient') {
       const response = await fetch(
         `www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`,
       );
       const data = await response.json();
+      console.log(`Olá ${response}`);
       return data;
     }
-    if (name === 'radioInput' && value === 'name') {
+    if (name === 'radioInput' && valueRadio === 'name') {
       const response = await fetch(
         `www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`,
       );
       const data = await response.json();
+      console.log(`Olá ${data}`);
       return data;
     }
-    if (name === 'radioInput' && value === 'firstLetter') {
+    if (valueRadio === 'firstLetter') {
       const response = await fetch(
         `www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`,
       );
       const data = await response.json();
+      console.log(`Olá entrou no firstLetter ${data}`);
       return data;
     }
   };
@@ -42,10 +48,16 @@ class SearchBar extends React.Component {
     });
   };
 
+  handleChecked = ({ target: { value } }) => {
+    this.setState({
+      valueRadio: value,
+    });
+  };
+
   render() {
-    const { ingredientSearch, nameSearch, firstLetterSearch } = this.state;
+    const { ingredientSearch, nameSearch, firstLetterSearch, searchInput } = this.state;
     return (
-      <form>
+      <form onSubmit={ this.fetchAPI }>
         <input
           name="searchInput"
           value={ searchInput }
@@ -57,10 +69,10 @@ class SearchBar extends React.Component {
           <input
             id="ingredientSearch"
             name="radioInput"
+            onChange={ this.handleChecked }
             value={ ingredientSearch }
             data-testid="ingredient-search-radio"
             type="radio"
-            checked={ this.fetchAPI }
           />
           Ingredient
         </label>
@@ -71,7 +83,8 @@ class SearchBar extends React.Component {
             value={ nameSearch }
             data-testid="name-search-radio"
             type="radio"
-            checked={ this.fetchAPI }
+            // checked={ this.fetchAPI }
+            onChange={ this.handleChecked }
           />
           Name
         </label>
@@ -82,16 +95,14 @@ class SearchBar extends React.Component {
             value={ firstLetterSearch }
             data-testid="first-letter-search-radio"
             type="radio"
-            checked={ this.fetchAPI }
+            onChange={ this.handleChecked }
           />
           First letter
         </label>
         <button
           data-testid="exec-search-btn"
-          onClick=""
         >
           Search
-
         </button>
       </form>
     );
