@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class SearchBar extends React.Component {
   state = {
@@ -10,34 +11,72 @@ class SearchBar extends React.Component {
     valueRadio: '',
   };
 
-  fetchAPI = async (e) => {
-    e.preventDefault();
-    const { name } = e.target;
+  mealsAPI = () => {
     const { searchInput, valueRadio } = this.state;
-    // console.log(valueRadio);
+
+    let url = '';
     if (valueRadio === 'ingredient') {
-      const response = await fetch(
-        `www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`,
-      );
-      const data = await response.json();
-      console.log(`Olá ${response}`);
-      return data;
+      url = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInput}`;
+    } else if (valueRadio === 'name') {
+      url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`;
+    } else if (valueRadio === 'firstLetter') {
+      if (searchInput.length > 1) {
+        global.alert('Your search must have only 1 (one) character');
+      }
+      url = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`;
     }
-    if (name === 'radioInput' && valueRadio === 'name') {
-      const response = await fetch(
-        `www.themealdb.com/api/json/v1/1/search.php?s=${searchInput}`,
-      );
-      const data = await response.json();
-      console.log(`Olá ${data}`);
-      return data;
+    return url;
+  };
+
+  drinksAPI = () => {
+    const { searchInput, valueRadio } = this.state;
+
+    let url = '';
+    if (valueRadio === 'ingredient') {
+      url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchInput}`;
+    } else if (valueRadio === 'name') {
+      url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchInput}`;
+    } else if (valueRadio === 'firstLetter') {
+      if (searchInput.length > 1) {
+        global.alert('Your search must have only 1 (one) character');
+      }
+      url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchInput}`;
     }
-    if (valueRadio === 'firstLetter') {
-      const response = await fetch(
-        `www.themealdb.com/api/json/v1/1/search.php?f=${searchInput}`,
-      );
+    return url;
+  };
+
+  fetchAPI = async () => {
+    const { pathname } = this.props;
+
+    let url = '';
+
+    if (pathname === '/meals') {
+      url = this.mealsAPI();
+    }
+
+    if (pathname === '/drinks') {
+      url = this.drinksAPI();
+    }
+
+    return fetch(url)
+      .then((response) => response)
+      .catch((error) => {
+        console.error(error);
+        throw error;
+      });
+  };
+
+  handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await this.fetchAPI();
       const data = await response.json();
-      console.log(`Olá entrou no firstLetter ${data}`);
-      return data;
+      this.setState({
+        // resultsAPI: data,
+      });
+      console.log(data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -57,7 +96,7 @@ class SearchBar extends React.Component {
   render() {
     const { ingredientSearch, nameSearch, firstLetterSearch, searchInput } = this.state;
     return (
-      <form onSubmit={ this.fetchAPI }>
+      <form onSubmit={ this.handleClick }>
         <input
           name="searchInput"
           value={ searchInput }
@@ -109,8 +148,12 @@ class SearchBar extends React.Component {
   }
 }
 
-const mapStateToProps = (glabalState) => ({
-  ...glabalState,
+SearchBar.propTypes = {
+  pathname: PropTypes.string,
+}.isRequired;
+
+const mapStateToProps = (globalState) => ({
+  pathname: globalState.pathReducer.path,
 });
 
 export default connect(mapStateToProps)(SearchBar);
