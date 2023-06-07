@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { actionGetPath } from '../redux/actions';
 
-class Recipes extends Component {
+class Drinks extends Component {
   componentDidMount() {
     const { history: { location: { pathname } }, dispatch } = this.props;
     dispatch(actionGetPath(pathname));
@@ -11,13 +11,13 @@ class Recipes extends Component {
 
   render() {
     return (
-      <div>Recipes</div>
+      <div>Drinks</div>
     );
   }
 }
 
-Recipes.propTypes = {
+Drinks.propTypes = {
   dispatch: PropTypes.func,
 }.isRequired;
 
-export default connect()(Recipes);
+export default connect()(Drinks);

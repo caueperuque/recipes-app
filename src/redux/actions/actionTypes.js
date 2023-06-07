@@ -1,1 +1,3 @@
-export const USER_LOGIN = 'USER_LOGIN';
+export const ACTION_TESTE = 'ACTION_TESTE';
+export const INITIAL_STATE = 'INITIAL_STATE';
+export const GET_PATH = 'GET_PATH';

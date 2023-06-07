@@ -1,12 +1,6 @@
-import { USER_LOGIN } from './actionTypes';
+import { GET_PATH } from './actionTypes';
 
-// export const userEmail = (email) => ({
-//   type: USER_LOGIN,
-//   payload: email,
-// });
-
-export const userLogin = ({ email, password }) => ({
-  type: USER_LOGIN,
-  email,
-  password,
+export const actionGetPath = (path) => ({
+  type: GET_PATH,
+  path,
 });
