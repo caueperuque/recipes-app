@@ -127,5 +127,11 @@ describe('Testando SearchBar', () => {
       //   'https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken',
       // );
     });
+
+    describe('Testes do componente Login', () => {
+      it('Renderiza corretamente o caminho', () => {
+        
+      });
+    });
   });
 });
