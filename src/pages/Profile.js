@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
-import { connect } from 'react-redux';
 
 class Profile extends Component {
   goToDoneRecipes = () => {
