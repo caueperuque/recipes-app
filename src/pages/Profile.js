@@ -65,4 +65,4 @@ Profile.propTypes = {
   }).isRequired,
 };
 
-export default connect()(Profile);
+export default Profile;
