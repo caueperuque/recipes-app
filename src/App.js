@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Header from './components/Header';
 import Recipes from './pages/Recipes';
 import Drinks from './pages/Drinks';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/" component={ Login } />
         <Route exact path="/meals" component={ Recipes } />
         <Route exact path="/drinks" component={ Drinks } />
+        <Route exact path="/profile" component={ Profile } />
       </Switch>
     </>
   );

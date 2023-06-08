@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import App from '../App';
 import Header from '../components/Header';
-import { mockData } from './mockData';
+import Profile from '../pages/Profile';
 
 describe('Testes do componente Login', () => {
   it('Renderiza corretamente o caminho', () => {
@@ -127,5 +127,36 @@ describe('Testando SearchBar', () => {
       //   'https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken',
       // );
     });
+  });
+});
+describe('Testes do componente Profile', () => {
+  it('envia para a rota /done-recipes ao clicar no respectivo botão', () => {
+    const { history } = renderWithRouterAndRedux(<Profile />);
+    const doneBtn = screen.getByTestId('profile-done-btn');
+    const { pathname } = history.location;
+
+    fireEvent.click(doneBtn);
+    expect(pathname).toBe('/done-recipes');
+  });
+
+  it('envia para a rota /favorite-recipes ao clicar no respectivo botão', () => {
+    renderWithRouterAndRedux(<Profile />);
+    const { history } = createMemoryHistory();
+    const favBtn = screen.getByTestId('profile-favorite-btn');
+    const { pathname } = history.location;
+
+    fireEvent.click(favBtn);
+    expect(pathname).toBe('/favorite-recipes');
+  });
+
+  it('apaga as informações de usuário do localStorage e envia para a rota / ao clicar em logout', () => {
+    const { history } = renderWithRouterAndRedux(<Profile />);
+    const logoutBtn = screen.getByTestId('profile-logout-btn');
+    const { pathname } = history.location;
+
+    localStorage.setItem('user', JSON.stringify({ email: 'alguem@teste.com' }));
+    fireEvent.click(logoutBtn);
+    expect(localStorage.getItem('user')).toBeNull();
+    expect(pathname).toBe('/');
   });
 });
