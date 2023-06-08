@@ -128,41 +128,35 @@ describe('Testando SearchBar', () => {
       // );
     });
   });
+});
+describe('Testes do componente Profile', () => {
+  it('envia para a rota /done-recipes ao clicar no respectivo botão', () => {
+    const { history } = renderWithRouterAndRedux(<Profile />);
+    const doneBtn = screen.getByTestId('profile-done-btn');
+    const { pathname } = history.location;
 
-  describe.only('Testes do componente Profile', () => {
-    it('envia para a rota /done-recipes ao clicar no respectivo botão', () => {
-      const { history } = renderWithRouterAndRedux(<Profile />);
-      // const { history } = renderWithRouterAndRedux(<Profile />);
+    fireEvent.click(doneBtn);
+    expect(pathname).toBe('/done-recipes');
+  });
 
-      const doneBtn = screen.getByTestId('profile-done-btn');
-      const { pathname } = history.location;
+  it('envia para a rota /favorite-recipes ao clicar no respectivo botão', () => {
+    renderWithRouterAndRedux(<Profile />);
+    const { history } = createMemoryHistory();
+    const favBtn = screen.getByTestId('profile-favorite-btn');
+    const { pathname } = history.location;
 
-      fireEvent.click(doneBtn);
-      expect(pathname).toBe('/done-recipes');
-    });
+    fireEvent.click(favBtn);
+    expect(pathname).toBe('/favorite-recipes');
+  });
 
-    it('envia para a rota /favorite-recipes ao clicar no respectivo botão', () => {
-      const { history } = renderWithRouterAndRedux(<Profile />);
-      // const { history } = renderWithRouterAndRedux(<Profile />);
+  it('apaga as informações de usuário do localStorage e envia para a rota / ao clicar em logout', () => {
+    const { history } = renderWithRouterAndRedux(<Profile />);
+    const logoutBtn = screen.getByTestId('profile-logout-btn');
+    const { pathname } = history.location;
 
-      const favBtn = screen.getByTestId('profile-favorite-btn');
-      const { pathname } = history.location;
-
-      fireEvent.click(favBtn);
-      expect(pathname).toBe('/favorite-recipes');
-    });
-
-    it('envia para a rota / ao clicar no respectivo botão', () => {
-      const { history } = renderWithRouterAndRedux(<Profile />);
-
-      const logoutBtn = screen.getByTestId('profile-logout-btn');
-      // setar um token no local storage e estar se ele continuar lá após o logout
-      localStorage.setItem('user', JSON.stringify({ email: 'alguem@teste.com' }));
-      const { pathname } = history.location;
-
-      fireEvent.click(logoutBtn);
-      expect(localStorage.getItem('user')).toBeNull();
-      expect(pathname).toBe('/');
-    });
+    localStorage.setItem('user', JSON.stringify({ email: 'alguem@teste.com' }));
+    fireEvent.click(logoutBtn);
+    expect(localStorage.getItem('user')).toBeNull();
+    expect(pathname).toBe('/');
   });
 });
