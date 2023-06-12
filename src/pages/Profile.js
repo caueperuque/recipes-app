@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
+import Footer from '../components/Footer';
 
 class Profile extends Component {
   goToDoneRecipes = () => {
@@ -54,6 +55,7 @@ class Profile extends Component {
         >
           Logout
         </button>
+        <Footer />
       </>
     );
   }

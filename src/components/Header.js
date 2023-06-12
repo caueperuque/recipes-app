@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import SearchBar from './SearchBar';
+import profileIcon from '../images/profileIcon.svg';
+import searchIcon from '../images/searchIcon.svg';
 
 class Header extends React.Component {
   state = {
@@ -24,7 +26,7 @@ class Header extends React.Component {
         <Link to="/profile">
           <img
             data-testid="profile-top-btn"
-            src="src/images/profileIcon.svg"
+            src={ profileIcon }
             alt="profile-ico"
           />
         </Link>
@@ -34,7 +36,7 @@ class Header extends React.Component {
         >
           <img
             data-testid="search-top-btn"
-            src="src/images/searchIcon.svg"
+            src={ searchIcon }
             alt="search-ico"
           />
         </button>
