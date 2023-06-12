@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actionGetPath } from '../redux/actions';
+import Header from '../components/Header';
 
 class DoneRecipes extends Component {
   componentDidMount() {
@@ -10,21 +12,13 @@ class DoneRecipes extends Component {
 
   render() {
     return (
-      <div>
-        Done Recipes
-      </div>
+      <Header />
     );
   }
 }
 
 DoneRecipes.propTypes = {
-  dispatch: Proptypes.func,
-  history: Proptypes.shape({
-    push: Proptypes.func,
-    location: Proptypes.shape({
-      pathname: Proptypes.string,
-    }),
-  }),
+  dispatch: PropTypes.func,
 }.isRequired;
 
 export default connect()(DoneRecipes);
