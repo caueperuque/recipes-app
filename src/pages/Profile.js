@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import Proptypes from 'prop-types';
+import { connect } from 'react-redux';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
+import { actionGetPath } from '../redux/actions';
 
 class Profile extends Component {
+  componentDidMount() {
+    const { history: { location: { pathname } }, dispatch } = this.props;
+    dispatch(actionGetPath(pathname));
+  }
+
   goToDoneRecipes = () => {
     const { history } = this.props;
     history.push('/done-recipes');
@@ -31,7 +39,7 @@ class Profile extends Component {
     const email = this.showEmail();
     return (
       <>
-        <div>Perfil</div>
+        <Header />
         <h2
           data-testid="profile-email"
         >
@@ -62,9 +70,13 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
+  dispatch: Proptypes.func,
   history: Proptypes.shape({
-    push: Proptypes.func.isRequired,
-  }).isRequired,
-};
+    push: Proptypes.func,
+    location: Proptypes.shape({
+      pathname: Proptypes.string,
+    }),
+  }),
+}.isRequired;
 
-export default Profile;
+export default connect()(Profile);

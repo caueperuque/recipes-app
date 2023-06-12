@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { actionGetPath } from '../redux/actions';
 import Footer from '../components/Footer';
 import '../index.css';
+import Header from '../components/Header';
 
 class Recipes extends Component {
   state = {
@@ -104,6 +105,7 @@ class Recipes extends Component {
     const lastCategoryPosition = 5;
     return (
       <main className="Main">
+        <Header />
         <section className="recipes__content">
           <aside>
             <label
