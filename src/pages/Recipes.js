@@ -20,7 +20,6 @@ class Recipes extends Component {
   }
 
   fetchRecipesAPI = (url, pathname) => {
-    // tem que pegar a url do global state para completar esse código
     if (pathname === '/meals') {
       fetch(url)
         .then((response) => response.json())
