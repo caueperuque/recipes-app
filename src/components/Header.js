@@ -18,11 +18,23 @@ class Header extends React.Component {
     });
   };
 
+  title = () => {
+    const { path } = this.props;
+    if (path === 'meals') {
+      return (
+        <h2
+      )
+    }
+  }
+
   render() {
-    const { title } = this.props;
+    const { title, path } = this.props;
     const { hide } = this.state;
     return (
       <>
+        <h2>
+          {path.replace('/', '')}
+        </h2>
         <Link to="/profile">
           <img
             data-testid="profile-top-btn"
@@ -51,8 +63,8 @@ Header.propTypes = {
   title: PropTypes.string,
 }.isRequired;
 
-const mapStateToProps = (glabalState) => ({
-  ...glabalState,
+const mapStateToProps = (globalState) => ({
+  path: globalState.pathReducer.path,
 });
 
 export default connect(mapStateToProps)(Header);
