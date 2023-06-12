@@ -18,6 +18,15 @@ class Header extends React.Component {
     });
   };
 
+  title = () => {
+    const { path } = this.props;
+    if (path === 'meals') {
+      return (
+        <h2
+      )
+    }
+  }
+
   render() {
     const { title, path } = this.props;
     const { hide } = this.state;
