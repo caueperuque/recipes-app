@@ -201,6 +201,7 @@ class Recipes extends Component {
 
 Recipes.propTypes = {
   history: PropTypes.shape({
+    push: PropTypes.func,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }).isRequired,
