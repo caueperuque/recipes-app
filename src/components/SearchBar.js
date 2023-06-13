@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { actionGetURL } from '../redux/actions';
 
 class SearchBar extends React.Component {
   state = {
@@ -9,6 +10,7 @@ class SearchBar extends React.Component {
     firstLetterSearch: 'firstLetter',
     searchInput: '',
     valueRadio: '',
+    // urlRecipes: '',
   };
 
   mealsAPI = () => {
@@ -45,39 +47,25 @@ class SearchBar extends React.Component {
     return url;
   };
 
-  fetchAPI = async () => {
-    const { pathname } = this.props;
-
+  urlGenerate = async () => {
+    const { path } = this.props;
     let url = '';
-
-    if (pathname === '/meals') {
+    if (path === '/meals') {
       url = this.mealsAPI();
+      return url;
     }
-
-    if (pathname === '/drinks') {
+    if (path === '/drinks') {
       url = this.drinksAPI();
+      return url;
     }
-
-    return fetch(url)
-      .then((response) => response)
-      .catch((error) => {
-        console.error(error);
-        throw error;
-      });
   };
 
   handleClick = async (e) => {
     e.preventDefault();
-    try {
-      const response = await this.fetchAPI();
-      const data = await response.json();
-      this.setState({
-        // resultsAPI: data,
-      });
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+    const { dispatch } = this.props;
+    const url = await this.urlGenerate();
+    console.log(url);
+    dispatch(actionGetURL(url));
   };
 
   handleChange = ({ target }) => {
@@ -153,7 +141,7 @@ SearchBar.propTypes = {
 }.isRequired;
 
 const mapStateToProps = (globalState) => ({
-  pathname: globalState.pathReducer.path,
+  path: globalState.pathReducer.path,
 });
 
 export default connect(mapStateToProps)(SearchBar);

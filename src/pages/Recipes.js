@@ -48,12 +48,17 @@ class Recipes extends Component {
   };
 
   recipesGenerate = () => {
-    const { history: { location: { pathname } } } = this.props;
-    let url = '';
-    if (pathname === '/meals') {
-      url = 'https://www.themealdb.com/api/json/v1/1/search.php?f=c';
-    } else if (pathname === '/drinks') {
-      url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a';
+    const { history: { location: { pathname } }, urlAPI } = this.props;
+    // console.log(urlAPI);
+    let url = urlAPI;
+    console.log({ urlAPI, pathname });
+    if (urlAPI === undefined && pathname === '/meals') {
+      url = 'https://www.themealdb.com/api/json/v1/1/random.php';
+      console.log('if 1');
+    }
+    if (urlAPI === undefined && pathname === '/drinks') {
+      url = 'https://www.thecocktaildb.com/api/json/v1/1/random.php';
+      console.log('if 2');
     }
     this.fetchRecipesAPI(url, pathname);
   };
@@ -140,7 +145,7 @@ class Recipes extends Component {
           </aside>
           {pathname === '/meals' ? (
             <section className="recipe__section">
-              { recipesArray && recipesArray.slice(0, lastRecipePosition)
+              {recipesArray && recipesArray.slice(0, lastRecipePosition)
                 .map((recipe, index) => {
                   const { idMeal, strMealThumb, strMeal } = recipe;
                   return (
@@ -159,7 +164,7 @@ class Recipes extends Component {
                         <h4
                           data-testid={ `${index}-card-name` }
                         >
-                          { strMeal }
+                          {strMeal}
                         </h4>
                       </Link>
                     </div>
@@ -168,7 +173,7 @@ class Recipes extends Component {
             </section>
           ) : (
             <section className="recipe__section">
-              { recipesArray && recipesArray.slice(0, lastRecipePosition)
+              {recipesArray && recipesArray.slice(0, lastRecipePosition)
                 .map((recipe, index) => {
                   const { idDrink, strDrinkThumb, strDrink } = recipe;
                   return (
@@ -187,7 +192,7 @@ class Recipes extends Component {
                         <h4
                           data-testid={ `${index}-card-name` }
                         >
-                          { strDrink }
+                          {strDrink}
                         </h4>
                       </Link>
                     </div>
@@ -206,4 +211,8 @@ Recipes.propTypes = {
   dispatch: PropTypes.func,
 }.isRequired;
 
-export default connect()(Recipes);
+const mapStateToProps = (globalState) => ({
+  urlAPI: globalState.pathReducer.url,
+});
+
+export default connect(mapStateToProps)(Recipes);
