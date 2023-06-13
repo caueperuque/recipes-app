@@ -12,6 +12,7 @@ class Recipes extends Component {
     recipesArray: [],
     categories: [],
     showRecipes: false,
+    selectedValue: '',
   };
 
   componentDidMount() {
@@ -39,6 +40,7 @@ class Recipes extends Component {
       .then((response) => response.json())
       .then((data) => {
         const key = pathname === '/meals' ? 'meals' : 'drinks'; // Atualize essa linha
+        // console.log(data[key]);
         this.setState({
           recipesArray: data[key],
         });
@@ -51,8 +53,8 @@ class Recipes extends Component {
   recipesGenerate = () => {
     const { history: { location: { pathname } } } = this.props;
     const url = pathname === '/meals'
-      ? 'https://www.themealdb.com/api/json/v1/1/random.php'
-      : 'https://www.thecocktaildb.com/api/json/v1/1/random.php';
+      ? 'https://www.themealdb.com/api/json/v1/1/search.php?s='
+      : 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
     this.fetchRecipesAPI(url, pathname);
   };
 
@@ -74,21 +76,30 @@ class Recipes extends Component {
       });
   };
 
-  handleCategoryChange = ({ target: { id } }) => {
+  handleCategoryChange = ({ target }) => {
     const { history: { location: { pathname } } } = this.props;
-    const url = pathname === '/meals'
-      ? `https://www.themealdb.com/api/json/v1/1/filter.php?c=${id}`
-      : `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${id}`;
-    this.setState({ showRecipes: false });
-    this.fetchRecipesAPI(url, pathname);
+    const { selectedValue } = this.state;
+    const filterSelected = selectedValue === target.id ? '' : target.id;
+    if (filterSelected === 'All' || filterSelected === '') {
+      this.recipesGenerate();
+    } else {
+      const url = pathname === '/meals'
+        ? `https://www.themealdb.com/api/json/v1/1/filter.php?c=${filterSelected}`
+        : `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${filterSelected}`;
+      this.fetchRecipesAPI(url, pathname);
+    }
+    this.setState({
+      showRecipes: false,
+      selectedValue: filterSelected,
+    });
   };
 
   renderRecipes() {
     const { recipes, history: { location: { pathname } } } = this.props;
-
+    const lastRecipePosition = 12;
     return (
-      <div>
-        {recipes.map((recipe, index) => {
+      <div className="recipe__section">
+        {recipes.slice(0, lastRecipePosition).map((recipe, index) => {
           const { idMeal,
             idDrink, strMeal, strDrink, strMealThumb, strDrinkThumb } = recipe;
           const recipeId = pathname === '/meals' ? idMeal : idDrink;
@@ -114,7 +125,9 @@ class Recipes extends Component {
   }
 
   render() {
-    const { recipesArray, categories, showRecipes } = this.state;
+    const {
+      recipesArray, categories,
+      showRecipes, selectedValue } = this.state;
     const { history: { location: { pathname } } } = this.props;
     const lastRecipePosition = 12;
     const lastCategoryPosition = 5;
@@ -125,9 +138,10 @@ class Recipes extends Component {
         <aside>
           <label htmlFor="All" data-testid="All-category-filter">
             <input
-              type="radio"
-              name="categories"
+              type="checkbox"
+              name="category"
               id="All"
+              checked={ selectedValue === 'All' }
               onChange={ this.handleCategoryChange }
             />
             All
@@ -141,19 +155,20 @@ class Recipes extends Component {
                 data-testid={ `${strCategory}-category-filter` }
               >
                 <input
-                  type="radio"
-                  name="categories"
+                  type="checkbox"
+                  name="category"
                   id={ strCategory }
+                  checked={ selectedValue === `${strCategory}` }
                   onChange={ this.handleCategoryChange }
                 />
                 {strCategory}
               </label>
             ))}
         </aside>
-        {showRecipes ? (
-          this.renderRecipes()
-        ) : (
-          <section className="recipes__content">
+        <section className="recipes__content">
+          {showRecipes ? (
+            this.renderRecipes()
+          ) : (
             <section className="recipe__section">
               {recipesArray
                 && recipesArray
@@ -191,8 +206,8 @@ class Recipes extends Component {
                     );
                   })}
             </section>
-          </section>
-        )}
+          )}
+        </section>
         <Footer />
       </main>
     );
@@ -203,12 +218,19 @@ Recipes.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
     location: PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  dispatch: PropTypes.func.isRequired,
-  recipes: PropTypes.arrayOf.isRequired,
-};
+      pathname: PropTypes.string,
+    }),
+  }),
+  dispatch: PropTypes.func,
+  recipes: PropTypes.arrayOf(PropTypes.shape({
+    idMeal: PropTypes.string,
+    idDrink: PropTypes.string,
+    strMeal: PropTypes.string,
+    strDrink: PropTypes.string,
+    strMealThumb: PropTypes.string,
+    strDrinkThumb: PropTypes.string,
+  })),
+}.isRequired;
 
 const mapStateToProps = (globalState) => ({
   recipes: globalState.pathReducer.recipes,
