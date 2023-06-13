@@ -1,4 +1,4 @@
-import { GET_PATH } from '../actions/actionTypes';
+import { GET_PATH, GET_RECIPES } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   path: '',
@@ -10,6 +10,11 @@ const pathReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       path: action.path,
+    };
+  case GET_RECIPES:
+    return {
+      ...state,
+      recipes: action.recipes,
     };
   default:
     return state;
