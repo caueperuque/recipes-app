@@ -28,7 +28,7 @@ class SearchBar extends React.Component {
     const response = await fetch(url);
     const data = await response.json();
     const recipes = Object.values(data)[0];
-
+    console.log(recipes);
     const { dispatch } = this.props;
     dispatch(actionGetRecipes(recipes));
   };
