@@ -25,12 +25,15 @@ class Recipes extends Component {
   componentDidUpdate(prevProps) {
     const { recipes } = this.props;
     const { showRecipes } = this.state;
-    if (recipes !== prevProps.recipes && recipes.length === 1 && !showRecipes) {
+    if (recipes === null && !showRecipes) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    } else if (recipes !== prevProps.recipes && recipes.length === 1 && !showRecipes) {
       const { idMeal, idDrink } = recipes[0];
       const recipeId = idMeal || idDrink;
       const { history, path } = this.props;
       history.push(`${path}/${recipeId}`);
     } else if (recipes !== prevProps.recipes && recipes.length > 0 && !showRecipes) {
+      console.log('oii');
       this.setState({ showRecipes: true });
     }
   }
