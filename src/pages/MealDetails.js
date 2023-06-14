@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import CardDetails from '../components/CardDetails';
 
 class MealDetails extends Component {
@@ -15,58 +16,73 @@ class MealDetails extends Component {
       .then((data) => this.setState({
         returnAPI: data.meals,
       }));
-    // const objetoSemVazios = this.removeElementosVazios(this.state.returnAPI);
-    // this.setState({ returnAPI: objetoSemVazios });
   }
-
-  // removeElementosVazios(objeto) {
-  //   const resultado = Object.fromEntries(
-  //     Object.entries(objeto).filter(([chave, valor]) => {
-  //       console.log(chave);
-  //       return valor !== null && valor !== undefined && valor !== '' && valor !== ' ';
-  //     }),
-  //   );
-
-  //   return resultado;
-  // }
 
   render() {
     const { returnAPI } = this.state;
-    // const maxIndex = 20;
 
     return (
       <div>
         { returnAPI && (
           <div>
+            { returnAPI.map((recipe) => (
+              <CardDetails
+                key={ Math.random() }
+                title={ recipe.strMeal }
+                image={ recipe.strMealThumb }
+                category={ recipe.strCategory }
+                instructions={ recipe.strInstructions }
+                video={ recipe.strYoutube }
+              />
+            )) }
             <ul>
-              { returnAPI.map((recipe) => Object.entries(returnAPI).map(([key, value]) => {
-                if (key.includes('strIngredient') && value) {
-                  return console.log(value);
-                  // <li key={ key }>{value}</li>
-                }
-                return console.log('oi');
-              })) }
+              { returnAPI.map((recipe) => (
+                Object.entries(recipe).map(([key, value], index) => {
+                  if (key.includes('strIngredient') && value && value.trim() !== '') {
+                    return (
+                      <li
+                        key={ key }
+                        data-testid={ `${index}-ingredient-name-and-measure` }
+                      >
+                        { value }
+                      </li>
+                    );
+                  }
+                  return null;
+                })
+              )) }
+            </ul>
+            <ul>
+              { returnAPI.map((recipe) => (
+                Object.entries(recipe).map(([key, value], index) => {
+                  if (key.includes('strMeasure') && value && value.trim() !== '') {
+                    return (
+                      <li
+                        key={ key }
+                        data-testid={ `${index}-ingredient-name-and-measure` }
+                      >
+                        { value }
+                      </li>
+                    );
+                  }
+                  return null;
+                })
+              )) }
             </ul>
           </div>
-        /* { returnAPI.map((recipe) => {
-              // strIngredient{i}
-              // arrayIngredient//
-              // return (
-              //   <CardDetails
-              //     key={ Math.random() }
-              //     title={ recipe.strMeal }
-              //     image={ recipe.strMealThumb }
-              //     category={ recipe.strCategory }
-              //     instructions={ recipe.strInstructions }
-              //     video={ recipe.strYoutube }
-              //     // ingredients={ ingredientArray }
-              //   />
-              // );
-            }) } */
         ) }
+
       </div>
     );
   }
 }
+
+MealDetails.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default connect()(MealDetails);

@@ -7,7 +7,6 @@ class CardDetails extends Component {
       image,
       title,
       category,
-      ingredients,
       instructions,
       video,
     } = this.props;
@@ -22,24 +21,15 @@ class CardDetails extends Component {
           />
           <h4 data-testid="recipe-title">{ title }</h4>
           <p data-testid="recipe-category">{category}</p>
-          <ul>
-            { ingredients.map((ingredient, index) => (
-              <li
-                data-testid={ `${index}-ingredient-name-and-measure` }
-                key={ Math.random() }
-              >
-                { ingredient }
-              </li>
-            )) }
-          </ul>
           <p data-testid="instructions">{instructions}</p>
           { video && (
             <iframe
+              data-testid="video"
               width="560"
               height="315"
               src={ video }
               title={ title }
-              allowfullscreen
+              // allowFullScreen
             />
           ) }
         </div>
