@@ -214,7 +214,9 @@ class Recipes extends Component {
             </section>
           )}
         </section>
-        <Footer />
+        <div className="footer">
+          <Footer />
+        </div>
       </main>
     );
   }

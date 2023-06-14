@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* max-width: 600px; */
+  /* height: 100vh; */
 }
 
 code {
@@ -47,4 +49,18 @@ code {
 
 .recipe__img{
   height: 150px;
+  /* padding: auto; */
+}
+
+.footer {
+  bottom: 0;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+  /* border: solid 2px red;
+  position: fixed;
+  padding: 10px;
+  width: 100%; */
 }
