@@ -25,12 +25,15 @@ class Recipes extends Component {
   componentDidUpdate(prevProps) {
     const { recipes } = this.props;
     const { showRecipes } = this.state;
-    if (recipes !== prevProps.recipes && recipes.length === 1 && !showRecipes) {
+    if (recipes === null && !showRecipes) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    } else if (recipes !== prevProps.recipes && recipes.length === 1 && !showRecipes) {
       const { idMeal, idDrink } = recipes[0];
       const recipeId = idMeal || idDrink;
-      const { history } = this.props;
-      history.push(`/drinks/${recipeId}`);
+      const { history, path } = this.props;
+      history.push(`${path}/${recipeId}`);
     } else if (recipes !== prevProps.recipes && recipes.length > 0 && !showRecipes) {
+      console.log('oii');
       this.setState({ showRecipes: true });
     }
   }
@@ -39,8 +42,7 @@ class Recipes extends Component {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        const key = pathname === '/meals' ? 'meals' : 'drinks'; // Atualize essa linha
-        // console.log(data[key]);
+        const key = pathname === '/meals' ? 'meals' : 'drinks';
         this.setState({
           recipesArray: data[key],
         });
@@ -107,7 +109,11 @@ class Recipes extends Component {
           const recipeImg = pathname === '/meals' ? strMealThumb : strDrinkThumb;
 
           return (
-            <div key={ recipeId } className="recipe__card">
+            <div
+              key={ recipeId }
+              className="recipe__card"
+              data-testid={ `${index}-recipe-card` }
+            >
               <Link to={ `/${pathname}/${recipeId}` }>
                 <img
                   src={ recipeImg }
@@ -234,6 +240,7 @@ Recipes.propTypes = {
 
 const mapStateToProps = (globalState) => ({
   recipes: globalState.pathReducer.recipes,
+  path: globalState.pathReducer.path,
 });
 
 export default connect(mapStateToProps)(Recipes);
