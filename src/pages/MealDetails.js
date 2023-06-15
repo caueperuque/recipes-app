@@ -5,6 +5,8 @@ import CardDetails from '../components/CardDetails';
 import RecommendCard from '../components/RecommendCard';
 import StartRecipe from '../components/StartRecipe';
 import { actionGetPath } from '../redux/actions';
+import ShareRecipeBtn from '../components/ShareRecipeBtn';
+import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 
 class MealDetails extends Component {
   state = {
@@ -91,6 +93,8 @@ class MealDetails extends Component {
           <RecommendCard cards={ recommendation } />
         ) }
         <StartRecipe />
+        <ShareRecipeBtn />
+        <FavoriteRecipeBtn />
       </div>
     );
   }
