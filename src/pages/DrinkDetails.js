@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import CardDetails from '../components/CardDetails';
 import RecommendCard from '../components/RecommendCard';
 import StartRecipe from '../components/StartRecipe';
+import { actionGetPath } from '../redux/actions';
 
 class DrinkDetails extends Component {
   state = {
@@ -10,6 +12,9 @@ class DrinkDetails extends Component {
   };
 
   componentDidMount() {
+    const { history: { location: { pathname } }, dispatch } = this.props;
+    dispatch(actionGetPath(pathname));
+    console.log(pathname);
     const {
       match: { params: { id } },
     } = this.props;
@@ -30,7 +35,6 @@ class DrinkDetails extends Component {
   render() {
     const { returnAPI, recommendation } = this.state;
     const lengthString = 13;
-    // console.log(recommendation);
     return (
       <div>
         { returnAPI && (
@@ -100,4 +104,4 @@ DrinkDetails.propTypes = {
   }),
 }.isRequired;
 
-export default DrinkDetails;
+export default connect()(DrinkDetails);

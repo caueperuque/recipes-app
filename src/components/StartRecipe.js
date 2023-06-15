@@ -1,33 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { actionIsInProgress } from '../redux/actions';
 
 class StartRecipe extends Component {
-  handleClick = (e) => {
-    e.preventDefault();
-    const { dispatch } = this.props;
-    dispatch(actionIsInProgress(true));
+  componentDidUpdate() {
+    const { path } = this.props;
+    console.log(path);
+  }
+
+  startClick = () => {
+    const { dispatch, progress } = this.props;
+    dispatch(actionIsInProgress(!progress));
+    localStorage.setItem('inProgressRecipes', JSON.stringify({
+      drinks: {
+        'id-da-bebida': ['lista-de-ingredientes-utilizados'],
+      },
+      meals: {
+        'id-da-comida': ['lista-de-ingredientes-utilizados'],
+      },
+    }));
   };
 
   render() {
+    const { path, progress } = this.props;
     return (
       <div className="container__button">
-        <button
-          data-testid="start-recipe-btn"
-          className="startrecipe__button"
-          onClick={ this.handleClick }
-          id="recipe__continue-button"
-        >
-          Continue Recipe
-        </button>
-        <button
-          data-testid="start-recipe-btn"
-          className="startrecipe__button"
-          onClick={ this.handleClick }
-        >
-          Start Recipe
-        </button>
+        <div>
+          <Link to={ `${path}/in-progress` }>
+            <button
+              data-testid="start-recipe-btn"
+              className="startrecipe__button"
+              onClick={ this.startClick }
+            >
+              { !progress ? 'Start Recipe' : 'Continue Recipe' }
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -37,4 +47,9 @@ StartRecipe.propTypes = {
   dispatch: PropTypes.func,
 }.isRequired;
 
-export default connect()(StartRecipe);
+const mapStateToProps = (globalState) => ({
+  path: globalState.pathReducer.path,
+  progress: globalState.inProgressReducer.progress,
+});
+
+export default connect(mapStateToProps)(StartRecipe);

@@ -29,7 +29,6 @@ class CardDetails extends Component {
               height="315"
               src={ video }
               title={ title }
-              // allowFullScreen
             />
           ) }
         </div>

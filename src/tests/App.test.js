@@ -45,8 +45,6 @@ describe('Testes do componente Login', () => {
     });
     console.log(enterButton.disabled);
 
-    // userEvent.type(emailInput, 'alguem@teste.com');
-    // userEvent.type(passwordInput, '1234567');
     fireEvent.change(emailInput, { target: { value: 'alguem@gmail.com' } });
     fireEvent.change(passwordInput, { target: { value: '12345678' } });
     expect(enterButton.disabled).toBe(false);
@@ -74,34 +72,37 @@ describe('Testes do componente Login', () => {
   });
 });
 
-describe('Testando SearchBar', () => {
-  // beforeEach(() => {
-  //   jest.spyOn(global, 'fetch');
-  //   global.fetch = jest.fn().mockResolvedValue({
-  //     json: jest.fn().mockResolvedValue(mockData),
-  //   });
-  // });
+describe('Testando Header e SearchBar', () => {
+  it('Testa a renderização do título do Profile, Done Recipes e Favorite Recipes', () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+    const { pathname } = history.location;
+    const DoneBtn = screen.getByTestId('profile-done-btn');
+    const FavoriteBtn = screen.getByTestId('profile-favorite-btn');
+    const ProfileBtn = screen.getByTestId('profile-top-btn');
 
-  // afterEach(() => {
-  //   global.fetch.mockClear();
-  // });
+    const inputEmail = screen.getByRole('textbox', { name: /user:/i });
+    const inputPassword = screen.getByLabelText(/password:/i);
+    const enterButton = screen.getByRole('button', {
+      name: /enter/i,
+    });
 
-  // it('testa se o botão search aparece', async () => {
-  //   renderWithRouterAndRedux(<Header />);
-  //   const btnSearch = screen.getByTestId('search-top-btn');
-  //   userEvent.click(btnSearch);
-  //   await waitFor(() => {
-  //     screen.getByText(/ingredient/i);
-  //     screen.getByText(/name/i);
-  //   });
-  //   const searchIpt = screen.getByTestId('search-input');
-  //   const filterFL = screen.getByText(/first letter/i);
-  //   const searchBtn = screen.getByTestId('exec-search-btn');
-  //   userEvent.type(searchIpt, 'a');
-  //   userEvent.click(filterFL);
-  //   userEvent.click(searchBtn);
-  //   expect(store.getStore().resultsAPI).toHaveLength(4);
-  // });
+    fireEvent.change(inputEmail, { target: { value: 'alguem@gmail.com' } });
+    fireEvent.change(inputPassword, { target: { value: '12345678' } });
+    userEvent.click(enterButton);
+
+    userEvent('Click', DoneBtn);
+    waitFor(() => screen.getByRole('heading', { name: /done recipes/i }));
+    expect(pathname).toBe('/done-recipes');
+
+    userEvent('Click', ProfileBtn);
+    waitFor(() => screen.getByRole('heading', { name: /Profile/i }));
+    expect(pathname).toBe('/profile');
+
+    userEvent('Click', FavoriteBtn);
+    waitFor(() => screen.getByRole('heading', { name: /Favorite Recipes/i }));
+    expect(pathname).toBe('/favorite-recipes');
+  });
+
   test('should call the API when the Search button is clicked', async () => {
     const mockFetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({ results: [] }),
@@ -124,12 +125,10 @@ describe('Testando SearchBar', () => {
 
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalled();
-      // expect(mockFetch).toHaveBeenCalledWith(
-      //   'https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken',
-      // );
     });
   });
 });
+
 describe('Testes do componente Profile', () => {
   it('envia para a rota /done-recipes ao clicar no respectivo botão', () => {
     const { history } = renderWithRouterAndRedux(<Profile />);
