@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CardDetails from '../components/CardDetails';
+import RecommendCard from '../components/RecommendCard';
 
 class MealDetails extends Component {
   state = {
@@ -82,6 +82,9 @@ class MealDetails extends Component {
             </ul>
           </div>
         )}
+        { recommendation && (
+          <RecommendCard cards={ recommendation } />
+        ) }
       </div>
     );
   }
@@ -95,4 +98,4 @@ MealDetails.propTypes = {
   }),
 }.isRequired;
 
-export default connect()(MealDetails);
+export default MealDetails;

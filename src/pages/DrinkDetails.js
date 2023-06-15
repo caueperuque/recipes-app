@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CardDetails from '../components/CardDetails';
+import RecommendCard from '../components/RecommendCard';
 
 class DrinkDetails extends Component {
   state = {
@@ -9,7 +9,9 @@ class DrinkDetails extends Component {
   };
 
   componentDidMount() {
-    const { match: { params: { id } } } = this.props;
+    const {
+      match: { params: { id } },
+    } = this.props;
     const $URL_API = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
     fetch($URL_API)
       .then((response) => response.json())
@@ -27,7 +29,7 @@ class DrinkDetails extends Component {
   render() {
     const { returnAPI, recommendation } = this.state;
     const lengthString = 13;
-    console.log(recommendation);
+    // console.log(recommendation);
     return (
       <div>
         { returnAPI && (
@@ -80,6 +82,9 @@ class DrinkDetails extends Component {
             </ul>
           </div>
         ) }
+        { recommendation && (
+          <RecommendCard cards={ recommendation } />
+        ) }
       </div>
     );
   }
@@ -93,4 +98,4 @@ DrinkDetails.propTypes = {
   }),
 }.isRequired;
 
-export default connect()(DrinkDetails);
+export default DrinkDetails;
