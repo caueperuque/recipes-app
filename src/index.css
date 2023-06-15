@@ -92,4 +92,9 @@ code {
 .startrecipe__button {
   position: fixed;
   bottom: 0;
+  margin: 20px;
+}
+
+#recipe__continue-button {
+  margin-left: 150px;
 }
