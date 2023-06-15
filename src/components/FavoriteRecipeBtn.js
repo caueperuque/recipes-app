@@ -2,11 +2,18 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import iconWhite from '../images/whiteHeartIcon.svg';
+import iconBlack from '../images/blackHeartIcon.svg';
+
 class FavoriteRecipeBtn extends Component {
+  state = {
+    iconHeart: iconBlack,
+  };
+
   handleClick = (e) => {
     e.preventDefault();
+    const { iconHeart } = this.state;
     const { recipe } = this.props;
-    // console.log(recipe);
     const arrayTeste = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     const objRecipes = recipe.map((recipeInfo) => ({
       id: recipeInfo.idDrink || recipeInfo.idMeal,
@@ -17,15 +24,20 @@ class FavoriteRecipeBtn extends Component {
       name: recipeInfo.strDrink || recipeInfo.strMeal,
       image: recipeInfo.strDrinkThumb || recipeInfo.strMealThumb,
     }));
-    localStorage
-      .setItem('favoriteRecipes', JSON.stringify([...arrayTeste, ...objRecipes]));
+    localStorage.setItem('favoriteRecipes', JSON
+      .stringify([...arrayTeste, ...objRecipes]));
+    this.setState({
+      iconHeart: iconHeart === iconWhite ? iconBlack : iconWhite,
+    });
   };
 
   render() {
+    const { iconHeart } = this.state;
+    const iconPath = iconHeart === iconWhite ? iconWhite : iconBlack;
     return (
       <div>
         <button data-testid="favorite-btn" onClick={ this.handleClick }>
-          Favorite
+          <img src={ iconPath } alt="share icon" />
         </button>
       </div>
     );
