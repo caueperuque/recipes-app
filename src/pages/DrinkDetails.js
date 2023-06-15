@@ -19,6 +19,7 @@ class DrinkDetails extends Component {
 
   render() {
     const { returnAPI } = this.state;
+    const lengthString = 13;
     return (
       <div>
         { returnAPI && (
@@ -28,36 +29,46 @@ class DrinkDetails extends Component {
                 key={ Math.random() }
                 title={ recipe.strDrink }
                 image={ recipe.strDrinkThumb }
-                category={ recipe.strCategory }
+                category={ recipe.strAlcoholic }
                 instructions={ recipe.strInstructions }
               />
             )) }
             <ul>
-              { returnAPI.map((recipe) => (
-                Object.entries(recipe).map(([key, value]) => {
+              {returnAPI.map((recipe) => {
+                let counter = 0;
+
+                return Object.entries(recipe).map(([key, value]) => {
                   if (key.includes('strIngredient') && value) {
-                    return <li key={ key } data-testid={ `${index}-ingredient-name-and-measure` }>{ value }</li>;
-                  }
-                  return null;
-                })
-              )) }
-            </ul>
-            <ul>
-              { returnAPI.map((recipe) => (
-                Object.entries(recipe).map(([key, value]) => {
-                  if (key.includes('strMeasure') && value && value !== ' ') {
+                    const measureKey = `strMeasure${key.slice(lengthString)}`;
+                    const measureValue = recipe[measureKey];
+
+                    if (measureValue && measureValue !== ' ') {
+                      const ingredientWithMeasure = `${value} - ${measureValue}`;
+
+                      const testDataId = `${counter}-ingredient-name-and-measure`;
+
+                      counter += 1;
+
+                      return (
+                        <li key={ key } data-testid={ testDataId }>
+                          {ingredientWithMeasure}
+                        </li>
+                      );
+                    }
+
+                    const testDataId = `${counter}-ingredient-name-and-measure`;
+
+                    counter += 1;
+
                     return (
-                      <li
-                        key={ key }
-                        // data-testid={ `${index}-ingredient-name-and-measure` }
-                      >
-                        { value }
+                      <li key={ key } data-testid={ testDataId }>
+                        {value}
                       </li>
                     );
                   }
                   return null;
-                })
-              )) }
+                });
+              })}
             </ul>
           </div>
         ) }

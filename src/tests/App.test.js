@@ -70,6 +70,7 @@ describe('Testes do componente Login', () => {
     const { pathname } = history.location;
 
     expect(pathname).toBe('/meals');
+    screen.logTestingPlaygroundURL();
   });
 });
 
