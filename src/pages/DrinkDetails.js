@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CardDetails from '../components/CardDetails';
 import RecommendCard from '../components/RecommendCard';
+import StartRecipe from '../components/StartRecipe';
 
 class DrinkDetails extends Component {
   state = {
@@ -85,6 +86,7 @@ class DrinkDetails extends Component {
         { recommendation && (
           <RecommendCard cards={ recommendation } />
         ) }
+        <StartRecipe />
       </div>
     );
   }

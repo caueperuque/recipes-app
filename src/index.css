@@ -88,3 +88,8 @@ code {
 .recommendation-title {
   margin-top: 5px;
 }
+
+.startrecipe__button {
+  position: fixed;
+  bottom: 0;
+}
