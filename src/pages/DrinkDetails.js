@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CardDetails from '../components/CardDetails';
 import RecommendCard from '../components/RecommendCard';
 import StartRecipe from '../components/StartRecipe';
-import { actionGetPath } from '../redux/actions';
+import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 
@@ -32,6 +32,12 @@ class DrinkDetails extends Component {
       .then((data) => this.setState({
         recommendation: data.meals,
       }));
+  }
+
+  componentDidUpdate() {
+    const { dispatch } = this.props;
+    const { returnAPI } = this.state;
+    dispatch(actionGetOnlyRecipe(returnAPI));
   }
 
   render() {
