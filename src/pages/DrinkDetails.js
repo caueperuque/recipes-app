@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import CardDetails from '../components/CardDetails';
 
 class DrinkDetails extends Component {
@@ -15,11 +16,18 @@ class DrinkDetails extends Component {
       .then((data) => this.setState({
         returnAPI: data.drinks,
       }));
+    const $URL_API_MEALS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+    fetch($URL_API_MEALS)
+      .then((response) => response.json())
+      .then((data) => this.setState({
+        recommendation: data.meals,
+      }));
   }
 
   render() {
-    const { returnAPI } = this.state;
+    const { returnAPI, recommendation } = this.state;
     const lengthString = 13;
+    console.log(recommendation);
     return (
       <div>
         { returnAPI && (

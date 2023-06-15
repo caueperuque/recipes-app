@@ -16,11 +16,18 @@ class MealDetails extends Component {
       .then((data) => this.setState({
         returnAPI: data.meals,
       }));
+    const $URL_API_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+    fetch($URL_API_DRINKS)
+      .then((response) => response.json())
+      .then((data) => this.setState({
+        recommendation: data.drinks,
+      }));
   }
 
   render() {
-    const { returnAPI } = this.state;
+    const { returnAPI, recommendation } = this.state;
     const lengthString = 13;
+    console.log(recommendation);
 
     return (
       <div>
