@@ -33,7 +33,6 @@ class Recipes extends Component {
       const { history, path } = this.props;
       history.push(`${path}/${recipeId}`);
     } else if (recipes !== prevProps.recipes && recipes.length > 0 && !showRecipes) {
-      console.log('oii');
       this.setState({ showRecipes: true });
     }
   }
@@ -47,9 +46,6 @@ class Recipes extends Component {
           recipesArray: data[key],
         });
       })
-      .catch((error) => {
-        console.log(error.message);
-      });
   };
 
   recipesGenerate = () => {
@@ -73,9 +69,6 @@ class Recipes extends Component {
           categories: data[key],
         });
       })
-      .catch((error) => {
-        console.log(error.message);
-      });
   };
 
   handleCategoryChange = ({ target }) => {
