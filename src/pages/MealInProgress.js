@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import CardDetails from '../components/CardDetails';
 import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
-import { actionGetPath } from '../redux/actions';
+import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import FinishBtn from '../components/FinishBtn';
 
 class MealInProgress extends Component {
   state = {
     returnAPI: null,
     checkedIngredients: {},
+    isDisable: true,
   };
 
   componentDidMount() {
@@ -20,41 +21,57 @@ class MealInProgress extends Component {
     const $URL_API = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
     fetch($URL_API)
       .then((response) => response.json())
-      .then((data) => this.setState({
-        returnAPI: data.meals,
-        checkedIngredients: this.loadCheckedIngredients(id), // Carrega os ingredientes marcados do localStorage
-      }));
+      .then((data) => {
+        this.setState(
+          {
+            returnAPI: data.meals,
+            checkedIngredients: this.loadCheckedIngredients(id),
+          },
+          this.checkDisableState,
+        );
+      })
+      .catch((error) => {
+        console.log('Erro ao carregar os dados:', error);
+      });
   }
 
   componentDidUpdate(prevProps) {
+    const { dispatch } = this.props;
+    const { returnAPI } = this.state;
+    dispatch(actionGetOnlyRecipe(returnAPI));
+
     const { match: { params: { id } } } = this.props;
     if (prevProps.match.params.id !== id) {
       this.setState({
-        checkedIngredients: this.loadCheckedIngredients(id), // Carrega os ingredientes marcados do localStorage ao trocar de receita
-      });
+        checkedIngredients: this.loadCheckedIngredients(id),
+      }, this.checkDisableState);
     }
   }
 
   handleChange = (index) => {
     this.setState((prevState) => {
       const { checkedIngredients } = prevState;
-      const isChecked = checkedIngredients[index] || false;
-      const updatedIngredients = {
-        ...checkedIngredients,
-        [index]: !isChecked,
-      };
-      this.saveCheckedIngredients(updatedIngredients); // Salva os ingredientes marcados no localStorage
+      const isCheckedIngredients = { ...checkedIngredients };
+      const isChecked = !isCheckedIngredients[index];
+      isCheckedIngredients[index] = isChecked;
+      this.saveCheckedIngredients(isCheckedIngredients);
+
+      const isDisable = Object.values(isCheckedIngredients).some((isChecked) => !isChecked);
+
       return {
-        checkedIngredients: updatedIngredients,
+        checkedIngredients: isCheckedIngredients,
+        isDisable: isDisable,
       };
     });
   };
 
   loadCheckedIngredients = (recipeId) => {
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    if (inProgressRecipes
+    if (
+      inProgressRecipes
       && inProgressRecipes.meals
-      && inProgressRecipes.meals[recipeId]) {
+      && inProgressRecipes.meals[recipeId]
+    ) {
       return inProgressRecipes.meals[recipeId].reduce((acc, ingredient) => {
         acc[ingredient] = true;
         return acc;
@@ -67,39 +84,44 @@ class MealInProgress extends Component {
     const { match: { params: { id } } } = this.props;
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
     inProgressRecipes.meals = inProgressRecipes.meals || {};
-    inProgressRecipes.meals[id] = Object.keys(ingredients)
-      .filter((key) => ingredients[key]);
+    inProgressRecipes.meals[id] = Object
+      .keys(ingredients).filter((key) => ingredients[key]);
     localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
   };
 
+  checkDisableState = () => {
+    const { checkedIngredients } = this.state;
+    const isDisable = Object.values(checkedIngredients).some((isChecked) => !isChecked);
+    this.setState({ isDisable });
+  };
+
   render() {
-    const { returnAPI, checkedIngredients } = this.state;
+    const { returnAPI, checkedIngredients, isDisable } = this.state;
     return (
       <div>
         {returnAPI ? (
           <>
             {returnAPI.map((recipe) => (
               <CardDetails
-                key={ Math.random() }
-                image={ recipe.strMealThumb }
-                title={ recipe.strMeal }
-                category={ recipe.strCategory }
-                instructions={ recipe.strInstructions }
+                key={Math.random()}
+                image={recipe.strMealThumb}
+                title={recipe.strMeal}
+                category={recipe.strCategory}
+                instructions={recipe.strInstructions}
               />
             ))}
           </>
         ) : (
           <p>Loading...</p>
         )}
-        {returnAPI
-          && returnAPI.map((recipe) => {
+        {returnAPI &&
+          returnAPI.map((recipe) => {
             let counter = 0;
 
             return Object.entries(recipe).map(([key, value]) => {
               if (key.includes('strIngredient') && value) {
                 const ingredientKey = key;
-                const measureKey = `strMeasure${ingredientKey
-                  .slice('strIngredient'.length)}`;
+                const measureKey = `strMeasure${ingredientKey.slice('strIngredient'.length)}`;
                 const ingredient = value;
                 const measure = recipe[measureKey];
                 const index = counter;
@@ -111,18 +133,16 @@ class MealInProgress extends Component {
                 const isChecked = checkedIngredients[index] || false;
 
                 return (
-                  <div key={ key }>
+                  <div key={key}>
                     <label
-                      data-testid={ testDataId }
-                      className={ isChecked ? 'checked' : '' }
+                      data-testid={testDataId}
+                      className={isChecked ? 'checked' : ''}
                     >
-                      {ingredient}
-                      -
-                      {measure}
+                      {ingredient}-{measure}
                       <input
                         type="checkbox"
-                        checked={ isChecked }
-                        onClick={ () => this.handleChange(index) }
+                        checked={isChecked}
+                        onClick={() => this.handleChange(index)}
                       />
                     </label>
                   </div>
@@ -134,7 +154,7 @@ class MealInProgress extends Component {
 
         <FavoriteRecipeBtn />
         <ShareRecipeBtn />
-        <FinishBtn />
+        <FinishBtn isDisabled={ isDisable } />
       </div>
     );
   }
