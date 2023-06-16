@@ -11,6 +11,7 @@ class MealInProgress extends Component {
   state = {
     returnAPI: null,
     checkedIngredients: {},
+    isDisable: true,
   };
 
   componentDidMount() {
@@ -21,10 +22,13 @@ class MealInProgress extends Component {
     fetch($URL_API)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({
-          returnAPI: data.meals,
-          checkedIngredients: this.loadCheckedIngredients(id),
-        });
+        this.setState(
+          {
+            returnAPI: data.meals,
+            checkedIngredients: this.loadCheckedIngredients(id),
+          },
+          this.checkDisableState,
+        );
       })
       .catch((error) => {
         console.log('Erro ao carregar os dados:', error);
@@ -47,16 +51,14 @@ class MealInProgress extends Component {
   handleChange = (index) => {
     this.setState((prevState) => {
       const { checkedIngredients } = prevState;
-      const isChecked = checkedIngredients[index] || false;
-      const updatedIngredients = {
-        ...checkedIngredients,
-        [index]: !isChecked,
-      };
-      this.saveCheckedIngredients(updatedIngredients);
+      const isCheckedIngredients = { ...checkedIngredients };
+      const isChecked = !isCheckedIngredients[index];
+      isCheckedIngredients[index] = isChecked;
+      this.saveCheckedIngredients(isCheckedIngredients);
       return {
-        checkedIngredients: updatedIngredients,
+        checkedIngredients: isCheckedIngredients,
       };
-    });
+    }, this.checkDisableState);
   };
 
   loadCheckedIngredients = (recipeId) => {
@@ -78,13 +80,21 @@ class MealInProgress extends Component {
     const { match: { params: { id } } } = this.props;
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
     inProgressRecipes.meals = inProgressRecipes.meals || {};
-    inProgressRecipes.meals[id] = Object.keys(ingredients)
-      .filter((key) => ingredients[key]);
+    inProgressRecipes.meals[id] = Object
+      .keys(ingredients).filter((key) => ingredients[key]);
     localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
   };
 
+  checkDisableState = () => {
+    const { checkedIngredients } = this.state;
+    if (!checkedIngredients) {
+      const isDisable = Object.values(checkedIngredients).some((isChecked) => !isChecked);
+      this.setState({ isDisable });
+    }
+  };
+
   render() {
-    const { returnAPI, checkedIngredients } = this.state;
+    const { returnAPI, checkedIngredients, isDisable } = this.state;
     return (
       <div>
         {returnAPI ? (
@@ -145,7 +155,7 @@ class MealInProgress extends Component {
 
         <FavoriteRecipeBtn />
         <ShareRecipeBtn />
-        <FinishBtn />
+        <FinishBtn isDisabled={ isDisable } />
       </div>
     );
   }

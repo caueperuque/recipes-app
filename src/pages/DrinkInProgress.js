@@ -11,6 +11,7 @@ class DrinkInProgress extends Component {
   state = {
     returnAPI: null,
     checkedIngredients: {},
+    isDisable: true,
   };
 
   componentDidMount() {
@@ -84,10 +85,14 @@ class DrinkInProgress extends Component {
     };
 
     localStorage.setItem('inProgressRecipes', JSON.stringify(drinkInProgress));
+
+    // Verifica se todos os checkboxes estão marcados
+    const isDisable = Object.values(checkedIngredients).some((isChecked) => !isChecked);
+    this.setState({ isDisable });
   };
 
   render() {
-    const { returnAPI, checkedIngredients } = this.state;
+    const { returnAPI, checkedIngredients, isDisable } = this.state;
 
     return (
       <div>
@@ -107,48 +112,49 @@ class DrinkInProgress extends Component {
           <p>Loading...</p>
         )}
 
-        {returnAPI && returnAPI.map((recipe) => {
-          let counter = 0;
+        {returnAPI
+          && returnAPI.map((recipe) => {
+            let counter = 0;
 
-          return Object.entries(recipe).map(([key, value]) => {
-            if (key.includes('strIngredient') && value) {
-              const ingredientKey = key;
-              const measureKey = `strMeasure${ingredientKey
-                .slice('strIngredient'.length)}`;
-              const ingredient = value;
-              const measure = recipe[measureKey];
-              const index = counter;
+            return Object.entries(recipe).map(([key, value]) => {
+              if (key.includes('strIngredient') && value) {
+                const ingredientKey = key;
+                const measureKey = `strMeasure${ingredientKey
+                  .slice('strIngredient'.length)}`;
+                const ingredient = value;
+                const measure = recipe[measureKey];
+                const index = counter;
 
-              const testDataId = `${counter}-ingredient-step`;
+                const testDataId = `${counter}-ingredient-step`;
 
-              counter += 1;
+                counter += 1;
 
-              return (
-                <div key={ key }>
-                  <label
-                    data-testid={ testDataId }
-                    className={ checkedIngredients[index] ? 'checked' : '' }
-                  >
-                    {ingredient}
-                    -
-                    {measure}
-                    <input
-                      type="checkbox"
-                      checked={ checkedIngredients[index] }
-                      onChange={ () => this.handleChange(index) }
-                    />
-                  </label>
-                </div>
-              );
-            }
+                return (
+                  <div key={ key }>
+                    <label
+                      data-testid={ testDataId }
+                      className={ checkedIngredients[index] ? 'checked' : '' }
+                    >
+                      {ingredient}
+                      -
+                      {measure}
+                      <input
+                        type="checkbox"
+                        checked={ checkedIngredients[index] }
+                        onChange={ () => this.handleChange(index) }
+                      />
+                    </label>
+                  </div>
+                );
+              }
 
-            return null;
-          });
-        })}
+              return null;
+            });
+          })}
 
         <FavoriteRecipeBtn />
         <ShareRecipeBtn />
-        <FinishBtn />
+        <FinishBtn isDisabled={ isDisable } />
       </div>
     );
   }
