@@ -99,3 +99,7 @@ code {
 #recipe__continue-button {
   margin-left: 150px;
 }
+
+.checked {
+  text-decoration: line-through solid rgb(0, 0, 0)
+}

@@ -10,6 +10,7 @@ import FinishBtn from '../components/FinishBtn';
 class MealInProgress extends Component {
   state = {
     returnAPI: null,
+    checkedIngredients: {},
   };
 
   componentDidMount() {
@@ -24,8 +25,21 @@ class MealInProgress extends Component {
       }));
   }
 
+  handleChange = (index) => { // Recebe o índice do ingrediente que foi clicado
+    this.setState((prevState) => {
+      const { checkedIngredients } = prevState;
+      const isChecked = checkedIngredients[index] || false; // Verifica se o ingrediente está marcado ou não
+      return {
+        checkedIngredients: {
+          ...checkedIngredients,
+          [index]: !isChecked, // Inverte o estado de marcação do ingrediente
+        },
+      };
+    });
+  };
+
   render() {
-    const { returnAPI } = this.state;
+    const { returnAPI, checkedIngredients } = this.state;
     return (
       <div>
         {returnAPI ? (
@@ -53,18 +67,24 @@ class MealInProgress extends Component {
                 .slice('strIngredient'.length)}`;
               const ingredient = value;
               const measure = recipe[measureKey];
+              const index = counter; // Salva o índice do ingrediente
 
               const testDataId = `${counter}-ingredient-step`;
 
               counter += 1;
 
               return (
-                <label key={ key } data-testid={ testDataId }>
-                  {ingredient}
-                  -
-                  {measure}
-                  <input type="checkbox" />
-                </label>
+                <div key={ key }>
+                  <label
+                    data-testid={ testDataId }
+                    className={ checkedIngredients[index] ? 'checked' : '' }
+                  >
+                    {ingredient}
+                    -
+                    {measure}
+                    <input type="checkbox" onClick={ () => this.handleChange(index) } />
+                  </label>
+                </div>
               );
             }
             return null;

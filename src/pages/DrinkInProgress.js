@@ -10,12 +10,12 @@ import { actionGetPath } from '../redux/actions';
 class DrinkInProgress extends Component {
   state = {
     returnAPI: null,
+    checkedIngredients: {}, // Armazena o estado de marcação de cada ingrediente
   };
 
   componentDidMount() {
     const { history: { location: { pathname } }, dispatch } = this.props;
     dispatch(actionGetPath(pathname));
-    console.log(pathname);
     const {
       match: { params: { id } },
     } = this.props;
@@ -27,8 +27,21 @@ class DrinkInProgress extends Component {
       }));
   }
 
+  handleChange = (index) => { // Recebe o índice do ingrediente que foi clicado
+    this.setState((prevState) => {
+      const { checkedIngredients } = prevState;
+      const isChecked = checkedIngredients[index] || false; // Verifica se o ingrediente está marcado ou não
+      return {
+        checkedIngredients: {
+          ...checkedIngredients,
+          [index]: !isChecked, // Inverte o estado de marcação do ingrediente
+        },
+      };
+    });
+  };
+
   render() {
-    const { returnAPI } = this.state;
+    const { returnAPI, checkedIngredients } = this.state;
     return (
       <div>
         {returnAPI ? (
@@ -56,19 +69,24 @@ class DrinkInProgress extends Component {
                 .slice('strIngredient'.length)}`;
               const ingredient = value;
               const measure = recipe[measureKey];
+              const index = counter; // Salva o índice do ingrediente
 
               const testDataId = `${counter}-ingredient-step`;
 
               counter += 1;
 
               return (
-                <label key={ key } data-testid={ testDataId }>
-                  {ingredient}
-                  {' '}
-                  -
-                  {measure}
-                  <input type="checkbox" />
-                </label>
+                <div key={ key }>
+                  <label
+                    data-testid={ testDataId }
+                    className={ checkedIngredients[index] ? 'checked' : '' }
+                  >
+                    {ingredient}
+                    -
+                    {measure}
+                    <input type="checkbox" onClick={ () => this.handleChange(index) } />
+                  </label>
+                </div>
               );
             }
             return null;
