@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import CardDetails from '../components/CardDetails';
 import RecommendCard from '../components/RecommendCard';
 import StartRecipe from '../components/StartRecipe';
+import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
+import ShareRecipeBtn from '../components/ShareRecipeBtn';
+import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 
 class DrinkDetails extends Component {
   state = {
@@ -10,6 +14,9 @@ class DrinkDetails extends Component {
   };
 
   componentDidMount() {
+    const { history: { location: { pathname } }, dispatch } = this.props;
+    dispatch(actionGetPath(pathname));
+    console.log(pathname);
     const {
       match: { params: { id } },
     } = this.props;
@@ -27,10 +34,15 @@ class DrinkDetails extends Component {
       }));
   }
 
+  componentDidUpdate() {
+    const { dispatch } = this.props;
+    const { returnAPI } = this.state;
+    dispatch(actionGetOnlyRecipe(returnAPI));
+  }
+
   render() {
     const { returnAPI, recommendation } = this.state;
     const lengthString = 13;
-    // console.log(recommendation);
     return (
       <div>
         { returnAPI && (
@@ -87,6 +99,8 @@ class DrinkDetails extends Component {
           <RecommendCard cards={ recommendation } />
         ) }
         <StartRecipe />
+        <ShareRecipeBtn />
+        <FavoriteRecipeBtn />
       </div>
     );
   }
@@ -100,4 +114,4 @@ DrinkDetails.propTypes = {
   }),
 }.isRequired;
 
-export default DrinkDetails;
+export default connect()(DrinkDetails);

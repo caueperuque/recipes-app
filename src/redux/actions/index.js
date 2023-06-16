@@ -1,4 +1,4 @@
-import { GET_PATH, GET_RECIPES, IS_IN_PROGESS } from './actionTypes';
+import { GET_ONLY_RECIPE, GET_PATH, GET_RECIPES, IS_IN_PROGESS } from './actionTypes';
 
 export const actionGetPath = (path) => ({
   type: GET_PATH,
@@ -13,4 +13,9 @@ export const actionGetRecipes = (recipes) => ({
 export const actionIsInProgress = (progress) => ({
   type: IS_IN_PROGESS,
   progress,
+});
+
+export const actionGetOnlyRecipe = (recipe) => ({
+  type: GET_ONLY_RECIPE,
+  recipe,
 });
