@@ -22,20 +22,54 @@ class MealInProgress extends Component {
       .then((response) => response.json())
       .then((data) => this.setState({
         returnAPI: data.meals,
+        checkedIngredients: this.loadCheckedIngredients(id), // Carrega os ingredientes marcados do localStorage
       }));
   }
 
-  handleChange = (index) => { // Recebe o índice do ingrediente que foi clicado
+  componentDidUpdate(prevProps) {
+    const { match: { params: { id } } } = this.props;
+    if (prevProps.match.params.id !== id) {
+      this.setState({
+        checkedIngredients: this.loadCheckedIngredients(id), // Carrega os ingredientes marcados do localStorage ao trocar de receita
+      });
+    }
+  }
+
+  handleChange = (index) => {
     this.setState((prevState) => {
       const { checkedIngredients } = prevState;
-      const isChecked = checkedIngredients[index] || false; // Verifica se o ingrediente está marcado ou não
+      const isChecked = checkedIngredients[index] || false;
+      const updatedIngredients = {
+        ...checkedIngredients,
+        [index]: !isChecked,
+      };
+      this.saveCheckedIngredients(updatedIngredients); // Salva os ingredientes marcados no localStorage
       return {
-        checkedIngredients: {
-          ...checkedIngredients,
-          [index]: !isChecked, // Inverte o estado de marcação do ingrediente
-        },
+        checkedIngredients: updatedIngredients,
       };
     });
+  };
+
+  loadCheckedIngredients = (recipeId) => {
+    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (inProgressRecipes
+      && inProgressRecipes.meals
+      && inProgressRecipes.meals[recipeId]) {
+      return inProgressRecipes.meals[recipeId].reduce((acc, ingredient) => {
+        acc[ingredient] = true;
+        return acc;
+      }, {});
+    }
+    return {};
+  };
+
+  saveCheckedIngredients = (ingredients) => {
+    const { match: { params: { id } } } = this.props;
+    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
+    inProgressRecipes.meals = inProgressRecipes.meals || {};
+    inProgressRecipes.meals[id] = Object.keys(ingredients)
+      .filter((key) => ingredients[key]);
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
   };
 
   render() {
@@ -57,39 +91,46 @@ class MealInProgress extends Component {
         ) : (
           <p>Loading...</p>
         )}
-        {returnAPI && returnAPI.map((recipe) => {
-          let counter = 0;
+        {returnAPI
+          && returnAPI.map((recipe) => {
+            let counter = 0;
 
-          return Object.entries(recipe).map(([key, value]) => {
-            if (key.includes('strIngredient') && value) {
-              const ingredientKey = key;
-              const measureKey = `strMeasure${ingredientKey
-                .slice('strIngredient'.length)}`;
-              const ingredient = value;
-              const measure = recipe[measureKey];
-              const index = counter; // Salva o índice do ingrediente
+            return Object.entries(recipe).map(([key, value]) => {
+              if (key.includes('strIngredient') && value) {
+                const ingredientKey = key;
+                const measureKey = `strMeasure${ingredientKey
+                  .slice('strIngredient'.length)}`;
+                const ingredient = value;
+                const measure = recipe[measureKey];
+                const index = counter;
 
-              const testDataId = `${counter}-ingredient-step`;
+                const testDataId = `${counter}-ingredient-step`;
 
-              counter += 1;
+                counter += 1;
 
-              return (
-                <div key={ key }>
-                  <label
-                    data-testid={ testDataId }
-                    className={ checkedIngredients[index] ? 'checked' : '' }
-                  >
-                    {ingredient}
-                    -
-                    {measure}
-                    <input type="checkbox" onClick={ () => this.handleChange(index) } />
-                  </label>
-                </div>
-              );
-            }
-            return null;
-          });
-        })}
+                const isChecked = checkedIngredients[index] || false;
+
+                return (
+                  <div key={ key }>
+                    <label
+                      data-testid={ testDataId }
+                      className={ isChecked ? 'checked' : '' }
+                    >
+                      {ingredient}
+                      -
+                      {measure}
+                      <input
+                        type="checkbox"
+                        checked={ isChecked }
+                        onClick={ () => this.handleChange(index) }
+                      />
+                    </label>
+                  </div>
+                );
+              }
+              return null;
+            });
+          })}
 
         <FavoriteRecipeBtn />
         <ShareRecipeBtn />

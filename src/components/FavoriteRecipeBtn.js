@@ -39,7 +39,7 @@ class FavoriteRecipeBtn extends Component {
       alcoholicOrNot: recipeInfo.strAlcoholic || '',
       name: recipeInfo.strDrink || recipeInfo.strMeal,
       image: recipeInfo.strDrinkThumb || recipeInfo.strMealThumb,
-    }));
+    })) || [];
     if (isFavorite) {
       localStorage.setItem('favoriteRecipes', JSON
         .stringify(arrayTeste.filter((frecipe) => frecipe.id !== objRecipes[0].id)));
