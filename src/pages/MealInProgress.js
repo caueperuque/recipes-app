@@ -44,7 +44,7 @@ class MealInProgress extends Component {
     if (prevProps.match.params.id !== id) {
       this.setState({
         checkedIngredients: this.loadCheckedIngredients(id),
-      });
+      }, this.checkDisableState);
     }
   }
 
@@ -55,10 +55,14 @@ class MealInProgress extends Component {
       const isChecked = !isCheckedIngredients[index];
       isCheckedIngredients[index] = isChecked;
       this.saveCheckedIngredients(isCheckedIngredients);
+
+      const isDisable = Object.values(isCheckedIngredients).some((isChecked) => !isChecked);
+
       return {
         checkedIngredients: isCheckedIngredients,
+        isDisable: isDisable,
       };
-    }, this.checkDisableState);
+    });
   };
 
   loadCheckedIngredients = (recipeId) => {
@@ -87,10 +91,8 @@ class MealInProgress extends Component {
 
   checkDisableState = () => {
     const { checkedIngredients } = this.state;
-    if (!checkedIngredients) {
-      const isDisable = Object.values(checkedIngredients).some((isChecked) => !isChecked);
-      this.setState({ isDisable });
-    }
+    const isDisable = Object.values(checkedIngredients).some((isChecked) => !isChecked);
+    this.setState({ isDisable });
   };
 
   render() {
@@ -101,26 +103,25 @@ class MealInProgress extends Component {
           <>
             {returnAPI.map((recipe) => (
               <CardDetails
-                key={ Math.random() }
-                image={ recipe.strMealThumb }
-                title={ recipe.strMeal }
-                category={ recipe.strCategory }
-                instructions={ recipe.strInstructions }
+                key={Math.random()}
+                image={recipe.strMealThumb}
+                title={recipe.strMeal}
+                category={recipe.strCategory}
+                instructions={recipe.strInstructions}
               />
             ))}
           </>
         ) : (
           <p>Loading...</p>
         )}
-        {returnAPI
-          && returnAPI.map((recipe) => {
+        {returnAPI &&
+          returnAPI.map((recipe) => {
             let counter = 0;
 
             return Object.entries(recipe).map(([key, value]) => {
               if (key.includes('strIngredient') && value) {
                 const ingredientKey = key;
-                const measureKey = `strMeasure${ingredientKey
-                  .slice('strIngredient'.length)}`;
+                const measureKey = `strMeasure${ingredientKey.slice('strIngredient'.length)}`;
                 const ingredient = value;
                 const measure = recipe[measureKey];
                 const index = counter;
@@ -132,18 +133,16 @@ class MealInProgress extends Component {
                 const isChecked = checkedIngredients[index] || false;
 
                 return (
-                  <div key={ key }>
+                  <div key={key}>
                     <label
-                      data-testid={ testDataId }
-                      className={ isChecked ? 'checked' : '' }
+                      data-testid={testDataId}
+                      className={isChecked ? 'checked' : ''}
                     >
-                      {ingredient}
-                      -
-                      {measure}
+                      {ingredient}-{measure}
                       <input
                         type="checkbox"
-                        checked={ isChecked }
-                        onClick={ () => this.handleChange(index) }
+                        checked={isChecked}
+                        onClick={() => this.handleChange(index)}
                       />
                     </label>
                   </div>

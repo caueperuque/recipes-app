@@ -86,7 +86,6 @@ class DrinkInProgress extends Component {
 
     localStorage.setItem('inProgressRecipes', JSON.stringify(drinkInProgress));
 
-    // Verifica se todos os checkboxes estão marcados
     const isDisable = Object.values(checkedIngredients).some((isChecked) => !isChecked);
     this.setState({ isDisable });
   };
