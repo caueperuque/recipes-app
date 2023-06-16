@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import CardDetails from '../components/CardDetails';
 import RecommendCard from '../components/RecommendCard';
 import StartRecipe from '../components/StartRecipe';
+import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
+import ShareRecipeBtn from '../components/ShareRecipeBtn';
+import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 
 class MealDetails extends Component {
   state = {
@@ -10,6 +14,8 @@ class MealDetails extends Component {
   };
 
   componentDidMount() {
+    const { history: { location: { pathname } }, dispatch } = this.props;
+    dispatch(actionGetPath(pathname));
     const { match: { params: { id } } } = this.props;
     const $URL_API = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
     fetch($URL_API)
@@ -23,6 +29,12 @@ class MealDetails extends Component {
       .then((data) => this.setState({
         recommendation: data.drinks,
       }));
+  }
+
+  componentDidUpdate() {
+    const { dispatch } = this.props;
+    const { returnAPI } = this.state;
+    dispatch(actionGetOnlyRecipe(returnAPI));
   }
 
   render() {
@@ -87,6 +99,8 @@ class MealDetails extends Component {
           <RecommendCard cards={ recommendation } />
         ) }
         <StartRecipe />
+        <ShareRecipeBtn />
+        <FavoriteRecipeBtn />
       </div>
     );
   }
@@ -100,4 +114,4 @@ MealDetails.propTypes = {
   }),
 }.isRequired;
 
-export default MealDetails;
+export default connect()(MealDetails);

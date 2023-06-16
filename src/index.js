@@ -7,6 +7,23 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './redux/store';
 
+// Verifica se o local storage está disponível
+function isLocalStorageAvailable() {
+  try {
+    const testKey = '__testKey__';
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Verifica e configura o local storage com um array vazio se necessário
+if (isLocalStorageAvailable() && !localStorage.getItem('favoriteRecipes')) {
+  localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+}
+
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
@@ -17,7 +34,4 @@ ReactDOM
     </BrowserRouter>,
   );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();

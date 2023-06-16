@@ -1,7 +1,7 @@
 import { IS_IN_PROGESS } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
-  progress: false,
+  progress: true,
 };
 
 const inProgressReducer = (state = INITIAL_STATE, action) => {

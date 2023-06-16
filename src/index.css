@@ -92,9 +92,14 @@ code {
 .startrecipe__button {
   position: fixed;
   bottom: 0;
+  right: 0;
   margin: 20px;
 }
 
 #recipe__continue-button {
   margin-left: 150px;
+}
+
+.checked {
+  text-decoration: line-through solid rgb(0, 0, 0)
 }

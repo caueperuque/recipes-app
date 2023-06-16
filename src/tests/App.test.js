@@ -51,8 +51,10 @@ describe('Testes do componente Login', () => {
       name: /enter/i,
     });
 
+
     userEvent.type(emailInput, 'alguem@gmail.com');
     userEvent.type(passwordInput, '12345678');
+
     expect(enterButton.disabled).toBe(false);
     expect(passwordInput.value).toBe('12345678');
   });
@@ -116,6 +118,7 @@ describe('Testando Header e SearchBar', () => {
     expect(ingredient).toBeInTheDocument();
     userEvent.click(btnSearch);
     expect(ingredient).not.toBeInTheDocument();
+
   });
 
   test('should call the API when the Search button is clicked', async () => {
