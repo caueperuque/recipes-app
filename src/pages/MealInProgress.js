@@ -39,14 +39,41 @@ class MealInProgress extends Component {
                 instructions={ recipe.strInstructions }
               />
             ))}
-            <FavoriteRecipeBtn />
-            <ShareRecipeBtn />
-            <FinishBtn />
           </>
         ) : (
           <p>Loading...</p>
         )}
-        {/* oi */}
+        {returnAPI && returnAPI.map((recipe) => {
+          let counter = 0;
+
+          return Object.entries(recipe).map(([key, value]) => {
+            if (key.includes('strIngredient') && value) {
+              const ingredientKey = key;
+              const measureKey = `strMeasure${ingredientKey
+                .slice('strIngredient'.length)}`;
+              const ingredient = value;
+              const measure = recipe[measureKey];
+
+              const testDataId = `${counter}-ingredient-step`;
+
+              counter += 1;
+
+              return (
+                <label key={ key } data-testid={ testDataId }>
+                  {ingredient}
+                  -
+                  {measure}
+                  <input type="checkbox" />
+                </label>
+              );
+            }
+            return null;
+          });
+        })}
+
+        <FavoriteRecipeBtn />
+        <ShareRecipeBtn />
+        <FinishBtn />
       </div>
     );
   }
