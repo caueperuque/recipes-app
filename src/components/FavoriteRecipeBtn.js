@@ -54,7 +54,6 @@ class FavoriteRecipeBtn extends Component {
   };
 
   render() {
-    // ERRO NO BOTÃO NÃO SEI PQ
     const { iconHeart } = this.state;
     return (
       <div>
