@@ -23,7 +23,8 @@ class DrinkInProgress extends Component {
     fetch($URL_API)
       .then((response) => response.json())
       .then((data) => {
-        const drinkInProgress = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
+        const drinkInProgress = JSON.parse(localStorage
+          .getItem('inProgressRecipes')) || {};
         const checkedIngredients = drinkInProgress.drinks?.[id] || [];
 
         this.setState({
@@ -37,7 +38,7 @@ class DrinkInProgress extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { checkedIngredients } = this.state;
+    // const { checkedIngredients } = this.state;
     const { match: { params: { id } } } = this.props;
 
     if (prevProps.match.params.id !== id) {
@@ -109,7 +110,8 @@ class DrinkInProgress extends Component {
           return Object.entries(recipe).map(([key, value]) => {
             if (key.includes('strIngredient') && value) {
               const ingredientKey = key;
-              const measureKey = `strMeasure${ingredientKey.slice('strIngredient'.length)}`;
+              const measureKey = `strMeasure${ingredientKey
+                .slice('strIngredient'.length)}`;
               const ingredient = value;
               const measure = recipe[measureKey];
               const index = counter;
@@ -124,8 +126,14 @@ class DrinkInProgress extends Component {
                     data-testid={ testDataId }
                     className={ checkedIngredients[index] ? 'checked' : '' }
                   >
-                    {ingredient} - {measure}
-                    <input type="checkbox" checked={ checkedIngredients[index] } onChange={ () => this.handleChange(index) } />
+                    {ingredient}
+                    -
+                    {measure}
+                    <input
+                      type="checkbox"
+                      checked={ checkedIngredients[index] }
+                      onChange={ () => this.handleChange(index) }
+                    />
                   </label>
                 </div>
               );
