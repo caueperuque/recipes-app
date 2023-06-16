@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CardDetails from '../components/CardDetails';
 import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
-import { actionGetPath } from '../redux/actions';
+import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import FinishBtn from '../components/FinishBtn';
 
 class MealInProgress extends Component {
@@ -20,17 +20,26 @@ class MealInProgress extends Component {
     const $URL_API = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
     fetch($URL_API)
       .then((response) => response.json())
-      .then((data) => this.setState({
-        returnAPI: data.meals,
-        checkedIngredients: this.loadCheckedIngredients(id), // Carrega os ingredientes marcados do localStorage
-      }));
+      .then((data) => {
+        this.setState({
+          returnAPI: data.meals,
+          checkedIngredients: this.loadCheckedIngredients(id),
+        });
+      })
+      .catch((error) => {
+        console.log('Erro ao carregar os dados:', error);
+      });
   }
 
   componentDidUpdate(prevProps) {
+    const { dispatch } = this.props;
+    const { returnAPI } = this.state;
+    dispatch(actionGetOnlyRecipe(returnAPI));
+
     const { match: { params: { id } } } = this.props;
     if (prevProps.match.params.id !== id) {
       this.setState({
-        checkedIngredients: this.loadCheckedIngredients(id), // Carrega os ingredientes marcados do localStorage ao trocar de receita
+        checkedIngredients: this.loadCheckedIngredients(id),
       });
     }
   }
@@ -43,7 +52,7 @@ class MealInProgress extends Component {
         ...checkedIngredients,
         [index]: !isChecked,
       };
-      this.saveCheckedIngredients(updatedIngredients); // Salva os ingredientes marcados no localStorage
+      this.saveCheckedIngredients(updatedIngredients);
       return {
         checkedIngredients: updatedIngredients,
       };
@@ -52,9 +61,11 @@ class MealInProgress extends Component {
 
   loadCheckedIngredients = (recipeId) => {
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    if (inProgressRecipes
+    if (
+      inProgressRecipes
       && inProgressRecipes.meals
-      && inProgressRecipes.meals[recipeId]) {
+      && inProgressRecipes.meals[recipeId]
+    ) {
       return inProgressRecipes.meals[recipeId].reduce((acc, ingredient) => {
         acc[ingredient] = true;
         return acc;

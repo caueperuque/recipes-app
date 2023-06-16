@@ -13,8 +13,10 @@ class ShareRecipeBtn extends Component {
   handleClick = (e) => {
     e.preventDefault();
     const { path } = this.props;
+    const path1 = path.split('/');
+    console.log(path1[2]);
     console.log(path);
-    copy(`http://localhost:3000${path}`);
+    copy(`http://localhost:3000/${path1[1]}/${path1[2]}`);
     this.setState({
       hidden: 'active',
     });

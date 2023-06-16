@@ -5,7 +5,7 @@ import CardDetails from '../components/CardDetails';
 import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import FinishBtn from '../components/FinishBtn';
-import { actionGetPath } from '../redux/actions';
+import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 
 class DrinkInProgress extends Component {
   state = {
@@ -38,7 +38,10 @@ class DrinkInProgress extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // const { checkedIngredients } = this.state;
+    const { dispatch } = this.props;
+    const { returnAPI } = this.state;
+    dispatch(actionGetOnlyRecipe(returnAPI));
+
     const { match: { params: { id } } } = this.props;
 
     if (prevProps.match.params.id !== id) {
