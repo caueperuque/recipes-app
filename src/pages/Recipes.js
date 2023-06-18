@@ -33,7 +33,6 @@ class Recipes extends Component {
       const { history, path } = this.props;
       history.push(`${path}/${recipeId}`);
     } else if (recipes !== prevProps.recipes && recipes.length > 0 && !showRecipes) {
-      console.log('oii');
       this.setState({ showRecipes: true });
     }
   }
@@ -46,9 +45,6 @@ class Recipes extends Component {
         this.setState({
           recipesArray: data[key],
         });
-      })
-      .catch((error) => {
-        console.log(error.message);
       });
   };
 
@@ -72,9 +68,6 @@ class Recipes extends Component {
         this.setState({
           categories: data[key],
         });
-      })
-      .catch((error) => {
-        console.log(error.message);
       });
   };
 
