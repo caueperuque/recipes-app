@@ -51,7 +51,6 @@ describe('Testes do componente Login', () => {
       name: /enter/i,
     });
 
-
     userEvent.type(emailInput, 'alguem@gmail.com');
     userEvent.type(passwordInput, '12345678');
 
@@ -118,7 +117,6 @@ describe('Testando Header e SearchBar', () => {
     expect(ingredient).toBeInTheDocument();
     userEvent.click(btnSearch);
     expect(ingredient).not.toBeInTheDocument();
-
   });
 
   test('should call the API when the Search button is clicked', async () => {
@@ -243,13 +241,13 @@ describe('Teste do componente Recipes', () => {
     userEvent.click(ingredientRadioBtn);
     userEvent.click(searchBtn);
 
-    await screen.findByText('Big Mac')
+    await screen.findByText('Big Mac');
   });
 
   it('Testa erro de procura por "First Letter" ao digitar mais de uma letra', async () => {
     global.fetch = jest.fn().mockResolvedValue({
       json: jest.fn()
-        .mockResolvedValue(mockData)
+        .mockResolvedValue(mockData),
     });
 
     renderWithRouterAndRedux(<App />, {}, '/meals');
@@ -269,12 +267,12 @@ describe('Teste do componente Recipes', () => {
     userEvent.click(fLetterRadioBtn);
     userEvent.click(searchBtn);
     expect(alertSpy).toHaveBeenCalledWith('Your search must have only 1 (one) character');
-  })
+  });
 
   it('Testa erro de procura por "Name" ao digitar "Barabam"', async () => {
     global.fetch = jest.fn().mockResolvedValue({
       json: jest.fn()
-        .mockResolvedValue(mockData)
+        .mockResolvedValue(mockData),
     });
 
     renderWithRouterAndRedux(<App />, {}, '/meals');
@@ -294,7 +292,7 @@ describe('Teste do componente Recipes', () => {
     userEvent.click(nameRadioBtn);
     userEvent.click(searchBtn);
     expect(alertSpy).toHaveBeenCalledWith('Sorry, we haven\'t found any recipes for these filters.');
-  })
+  });
 
   // it('Testa de só tiver um elemento, será direcionado diretamente para a página de detalhes da receita', async () => {
   //   global.fetch = jest.fn().mockResolvedValue({

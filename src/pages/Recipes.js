@@ -45,7 +45,7 @@ class Recipes extends Component {
         this.setState({
           recipesArray: data[key],
         });
-      })
+      });
   };
 
   recipesGenerate = () => {
@@ -68,7 +68,7 @@ class Recipes extends Component {
         this.setState({
           categories: data[key],
         });
-      })
+      });
   };
 
   handleCategoryChange = ({ target }) => {
