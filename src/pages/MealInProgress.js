@@ -77,7 +77,8 @@ class MealInProgress extends Component {
         });
         return count;
       }, 0);
-      const checkedCount = Object.values(checkedIngredients).filter((isChecked) => isChecked).length;
+      const checkedCount = Object.values(checkedIngredients)
+        .filter((isChecked) => isChecked).length;
       const allChecked = totalIngredients === checkedCount;
       this.setState({ allIngredientsChecked: allChecked });
     }
@@ -133,7 +134,8 @@ class MealInProgress extends Component {
             return Object.entries(recipe).map(([key, value]) => {
               if (key.includes('strIngredient') && value) {
                 const ingredientKey = key;
-                const measureKey = `strMeasure${ingredientKey.slice('strIngredient'.length)}`;
+                const measureKey = `strMeasure${ingredientKey
+                  .slice('strIngredient'.length)}`;
                 const ingredient = value;
                 const measure = recipe[measureKey];
                 const index = counter;
