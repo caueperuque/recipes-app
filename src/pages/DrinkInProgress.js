@@ -24,9 +24,20 @@ class DrinkInProgress extends Component {
     fetch($URL_API)
       .then((response) => response.json())
       .then((data) => {
-        const drinkInProgress = JSON.parse(localStorage
-          .getItem('inProgressRecipes')) || {};
+        const drinkInProgress = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
         const checkedIngredients = drinkInProgress.drinks?.[id] || [];
+
+        const totalIngredients = data.drinks.reduce((count, recipe) => {
+          let counter = count;
+          Object.entries(recipe).forEach(([key]) => {
+            if (key.includes('strIngredient') && recipe[key]) {
+              counter += 1;
+            }
+          });
+          return counter;
+        }, 0);
+
+        const isDisable = checkedIngredients.length !== totalIngredients || checkedIngredients.length === 0;
 
         this.setState({
           returnAPI: data.drinks,
@@ -34,6 +45,7 @@ class DrinkInProgress extends Component {
             acc[curr] = true;
             return acc;
           }, {}),
+          isDisable,
         });
       });
   }
@@ -86,7 +98,19 @@ class DrinkInProgress extends Component {
 
     localStorage.setItem('inProgressRecipes', JSON.stringify(drinkInProgress));
 
-    const isDisable = Object.values(checkedIngredients).some((isChecked) => !isChecked);
+    const { returnAPI } = this.state;
+    const totalIngredients = returnAPI.reduce((count, recipe) => {
+      let counter = count;
+      Object.entries(recipe).forEach(([key, value]) => {
+        if (key.includes('strIngredient') && value) {
+          counter += 1;
+        }
+      });
+      return counter;
+    }, 0);
+
+    const savedIngredients = drinkInProgress.drinks?.[id]?.length || 0;
+    const isDisable = savedIngredients !== totalIngredients;
     this.setState({ isDisable });
   };
 
@@ -118,8 +142,7 @@ class DrinkInProgress extends Component {
             return Object.entries(recipe).map(([key, value]) => {
               if (key.includes('strIngredient') && value) {
                 const ingredientKey = key;
-                const measureKey = `strMeasure${ingredientKey
-                  .slice('strIngredient'.length)}`;
+                const measureKey = `strMeasure${ingredientKey.slice('strIngredient'.length)}`;
                 const ingredient = value;
                 const measure = recipe[measureKey];
                 const index = counter;
