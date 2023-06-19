@@ -7,11 +7,11 @@ import Login from './pages/Login';
 import Recipes from './pages/Recipes';
 import Profile from './pages/Profile';
 import MealDetails from './pages/MealDetails';
-import DrinkDetails from './pages/DrinkDetails';
+import DrinkDetails from './pages/RecipeDetails';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import MealInProgress from './pages/MealInProgress';
-import DrinkInProgress from './pages/DrinkInProgress';
+import DrinkInProgress from './pages/RecipeInProgress';
 
 function App() {
   return (
