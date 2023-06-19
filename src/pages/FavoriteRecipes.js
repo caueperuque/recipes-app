@@ -5,13 +5,18 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import Header from '../components/Header';
 import { actionGetPath } from '../redux/actions';
 import shareIcon from '../images/shareIcon.svg';
-import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
+import iconWhite from '../images/whiteHeartIcon.svg';
+import iconBlack from '../images/blackHeartIcon.svg';
+
+const copy = require('clipboard-copy');
 
 class FavoriteRecipes extends Component {
   state = {
     recipes: [],
     linkCopied: {},
     filter: 'all',
+    iconHeart: iconWhite,
+    // isFavorite: false,
   };
 
   componentDidMount() {
@@ -22,12 +27,54 @@ class FavoriteRecipes extends Component {
     console.log(path);
   }
 
+  componentDidUpdate(prevProps) {
+    const { path } = this.props;
+    if (prevProps.path !== path) {
+      // console.log(recipe[0].idMeal);
+      const id = path.split('/')[2];
+      const saveRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+      this.setState({
+        isFavorite: saveRecipes.some((frecipe) => frecipe.id === id),
+      }, () => this
+        .setState(({ isFavorite }) => ({
+          iconHeart: isFavorite ? iconBlack : iconWhite,
+        })));
+    }
+  }
+
   handleFilter = (value) => {
     this.setState({ filter: value });
   };
 
+  handleClick = (e) => {
+    e.preventDefault();
+    const { iconHeart, isFavorite } = this.state;
+    const { recipes } = this.state;
+    const arrayTeste = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const objRecipes = recipes.map((recipeInfo) => ({
+      id: recipeInfo.id,
+      type: recipeInfo.type,
+      nationality: recipeInfo.nationality || '',
+      category: recipeInfo.category || '',
+      alcoholicOrNot: recipeInfo.alcoholicOrNot || '',
+      name: recipeInfo.name,
+      image: recipeInfo.image,
+    })) || [];
+    if (isFavorite) {
+      localStorage.setItem('favoriteRecipes', JSON
+        .stringify(arrayTeste.filter((frecipe) => frecipe.id !== objRecipes[0].id)));
+    } else {
+      localStorage.setItem('favoriteRecipes', JSON
+        .stringify([...arrayTeste, ...objRecipes]));
+    }
+    this.setState({
+      iconHeart: iconHeart === iconWhite ? iconBlack : iconWhite,
+      isFavorite: !isFavorite,
+    });
+  };
+
   render() {
-    const { recipes, linkCopied, filter } = this.state;
+    const { recipes, linkCopied, filter, iconHeart } = this.state;
     let filteredRecipes = recipes;
 
     if (filter === 'meal') {
@@ -82,15 +129,6 @@ class FavoriteRecipes extends Component {
                   </p>
                 ) }
                 <p data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</p>
-                {/* {
-                  recipe.tags.slice(0, 2).map((tag) => (
-                    <div key={ Math.random() }>
-                      <p data-testid={ `${index}-${tag}-horizontal-tag` }>
-                        {tag}
-                      </p>
-                    </div>
-                  ))
-                } */}
                 {
                   recipe.alcoholicOrNot && (
                     <p data-testid={ `${index}-horizontal-top-text` }>
@@ -111,8 +149,12 @@ class FavoriteRecipes extends Component {
                 {linkCopied[index] && (
                   <p>Link copied!</p>
                 )}
-                <button data-testid={ `${index}-horizontal-favorite-btn` }>
-                  Favorite
+                <button
+                  data-testid={ `${index}-horizontal-favorite-btn` }
+                  onClick={ this.handleClick }
+                  src={ iconHeart }
+                >
+                  <img src={ iconHeart } alt="favorite icon" />
                 </button>
               </div>
             ))}
@@ -127,4 +169,9 @@ FavoriteRecipes.propTypes = {
   dispatch: PropTypes.func,
 }.isRequired;
 
-export default connect()(FavoriteRecipes);
+const mapStateToProps = (globalState) => ({
+  recipe: globalState.pathReducer.recipe,
+  path: globalState.pathReducer.path,
+});
+
+export default connect(mapStateToProps)(FavoriteRecipes);
