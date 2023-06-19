@@ -60,6 +60,13 @@ class DoneRecipes extends Component {
                     </div>
                   ))
                 }
+                {
+                  recipe.alcoholicOrNot && (
+                    <p data-testid={ `${index}-horizontal-top-text` }>
+                      { recipe.alcoholicOrNot }
+                    </p>
+                  )
+                }
                 <button data-testid={ `${index}-horizontal-share-btn` } src={ shareIcon }>
                   <img src={ shareIcon } alt="share" />
                 </button>
