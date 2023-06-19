@@ -118,7 +118,6 @@ class DrinkInProgress extends Component {
 
   render() {
     const { returnAPI, checkedIngredients, isDisable } = this.state;
-
     return (
       <div>
         {returnAPI ? (
