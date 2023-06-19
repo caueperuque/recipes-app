@@ -30,7 +30,6 @@ class FavoriteRecipes extends Component {
   componentDidUpdate(prevProps) {
     const { path } = this.props;
     if (prevProps.path !== path) {
-      // console.log(recipe[0].idMeal);
       const id = path.split('/')[2];
       const saveRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
       this.setState({
