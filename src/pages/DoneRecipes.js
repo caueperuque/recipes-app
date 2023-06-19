@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actionGetPath } from '../redux/actions';
 import Header from '../components/Header';
+import shareIcon from '../images/shareIcon.svg';
 
 class DoneRecipes extends Component {
   state = {
@@ -39,11 +40,19 @@ class DoneRecipes extends Component {
                   alt={ recipe.name }
                   data-testid={ `${index}-horizontal-image` }
                 />
-                <p data-testid={ `${index}-horizontal-top-text` }>{ recipe.category }</p>
+                { recipe.nationality ? (
+                  <p data-testid={ `${index}-horizontal-top-text` }>
+                    {`${recipe.nationality} - ${recipe.category}`}
+                  </p>
+                ) : (
+                  <p data-testid={ `${index}-horizontal-top-text` }>
+                    {recipe.category}
+                  </p>
+                ) }
                 <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
                 <p data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</p>
                 {
-                  recipe.tags.map((tag) => (
+                  recipe.tags.slice(0, 2).map((tag) => (
                     <div key={ Math.random() }>
                       <p data-testid={ `${index}-${tag}-horizontal-tag` }>
                         {tag}
@@ -51,7 +60,9 @@ class DoneRecipes extends Component {
                     </div>
                   ))
                 }
-                <button data-testid={ `${index}-horizontal-share-btn` }>Share</button>
+                <button data-testid={ `${index}-horizontal-share-btn` } src={ shareIcon }>
+                  <img src={ shareIcon } alt="share" />
+                </button>
               </div>
             ))}
           </div>
