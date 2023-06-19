@@ -5,14 +5,58 @@ import { actionGetPath } from '../redux/actions';
 import Header from '../components/Header';
 
 class DoneRecipes extends Component {
+  state = {
+    recipes: [],
+  };
+
   componentDidMount() {
     const { history: { location: { pathname } }, dispatch } = this.props;
     dispatch(actionGetPath(pathname));
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    this.setState({ recipes: doneRecipes });
   }
 
   render() {
+    const { recipes } = this.state;
     return (
-      <Header />
+      <div>
+        <Header />
+        <button data-testid="filter-by-all-btn">
+          All
+        </button>
+        <button data-testid="filter-by-meal-btn">
+          Meals
+        </button>
+        <button data-testid="filter-by-drink-btn">
+          Drinks
+        </button>
+        { recipes && (
+          <div>
+            { recipes.map((recipe, index) => (
+              <div key={ Math.random() }>
+                <img
+                  src={ recipe.image }
+                  alt={ recipe.name }
+                  data-testid={ `${index}-horizontal-image` }
+                />
+                <p data-testid={ `${index}-horizontal-top-text` }>{ recipe.category }</p>
+                <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
+                <p data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</p>
+                {
+                  recipe.tags.map((tag) => (
+                    <div key={ Math.random() }>
+                      <p data-testid={ `${index}-${tag}-horizontal-tag` }>
+                        {tag}
+                      </p>
+                    </div>
+                  ))
+                }
+                <button data-testid={ `${index}-horizontal-share-btn` }>Share</button>
+              </div>
+            ))}
+          </div>
+        ) }
+      </div>
     );
   }
 }
