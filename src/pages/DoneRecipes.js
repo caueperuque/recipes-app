@@ -5,20 +5,24 @@ import { actionGetPath } from '../redux/actions';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
+const copy = require('clipboard-copy');
+
 class DoneRecipes extends Component {
   state = {
     recipes: [],
+    linkCopied: {},
   };
 
   componentDidMount() {
-    const { history: { location: { pathname } }, dispatch } = this.props;
+    const { history: { location: { pathname } }, dispatch, path } = this.props;
     dispatch(actionGetPath(pathname));
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
     this.setState({ recipes: doneRecipes });
+    console.log(path);
   }
 
   render() {
-    const { recipes } = this.state;
+    const { recipes, linkCopied } = this.state;
     return (
       <div>
         <Header />
@@ -67,9 +71,19 @@ class DoneRecipes extends Component {
                     </p>
                   )
                 }
-                <button data-testid={ `${index}-horizontal-share-btn` } src={ shareIcon }>
+                <button
+                  data-testid={ `${index}-horizontal-share-btn` }
+                  src={ shareIcon }
+                  onClick={ () => {
+                    copy(`http://localhost:3000/${recipe.type}s/${recipe.id}`);
+                    this.setState({ linkCopied: { ...linkCopied, [index]: true } });
+                  } }
+                >
                   <img src={ shareIcon } alt="share" />
                 </button>
+                {linkCopied[index] && (
+                  <p>Link copied!</p>
+                )}
               </div>
             ))}
           </div>
@@ -83,4 +97,8 @@ DoneRecipes.propTypes = {
   dispatch: PropTypes.func,
 }.isRequired;
 
-export default connect()(DoneRecipes);
+const mapStateToProps = (globalState) => ({
+  path: globalState.pathReducer.path,
+});
+
+export default connect(mapStateToProps)(DoneRecipes);
