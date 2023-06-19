@@ -10,8 +10,12 @@ import { mockCorba } from './mockCorba';
 import { mockCategories } from './mockCategories';
 import { mockBeefCategory } from './mockBeefCategory';
 import { mockCheeseIngredient } from './mockCheeseIngredient';
+import { mockA1 } from './mockA1';
 
 afterEach(jest.restoreAllMocks);
+const searchBtn = 'exec-search-btn';
+const searchInpt = 'search-input';
+const searchTopButton = 'search-top-btn';
 
 describe('Testes do componente Login', () => {
   it('Renderiza corretamente o caminho', () => {
@@ -110,7 +114,7 @@ describe('Testando Header e SearchBar', () => {
 
   it('testa se o searchbar aparece e some ao clicar no botão', () => {
     renderWithRouterAndRedux(<App />, {}, '/meals');
-    const btnSearch = screen.getByTestId('search-top-btn');
+    const btnSearch = screen.getByTestId(searchTopButton);
     expect(btnSearch).toBeInTheDocument();
     userEvent.click(btnSearch);
     const ingredient = screen.getByText(/ingredient/i);
@@ -119,7 +123,7 @@ describe('Testando Header e SearchBar', () => {
     expect(ingredient).not.toBeInTheDocument();
   });
 
-  test('should call the API when the Search button is clicked', async () => {
+  test('Deve chamar a API quando o SearchBtn for clicado', async () => {
     const mockFetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue({ results: [] }),
     });
@@ -127,16 +131,16 @@ describe('Testando Header e SearchBar', () => {
     global.fetch = mockFetch;
 
     renderWithRouterAndRedux(<Header />);
-    const bntSrch = screen.getByTestId('search-top-btn');
+    const bntSrch = screen.getByTestId(searchTopButton);
     userEvent.click(bntSrch);
     await waitFor(() => {
-      const searchInput = screen.getByTestId('search-input');
+      const searchInput = screen.getByTestId(searchInpt);
       const radio = screen.getByTestId('ingredient-search-radio');
 
       userEvent.type(searchInput, 'chicken');
       userEvent.click(radio);
     });
-    const searchButton = screen.getByTestId('exec-search-btn');
+    const searchButton = screen.getByTestId(searchBtn);
     userEvent.click(searchButton);
 
     await waitFor(() => {
@@ -153,25 +157,25 @@ describe('Testando Header e SearchBar', () => {
         .mockResolvedValueOnce(mockCorba),
     });
 
-    const { history } = renderWithRouterAndRedux(<App />, {}, '/meals');
+    // const { history } = renderWithRouterAndRedux(<App />, {}, '/meals');
     // busca na tela inicial
     await screen.findByText('Corba');
 
-    const searchTopBtn = screen.getByTestId('search-top-btn');
+    const searchTopBtn = screen.getByTestId(searchTopButton);
     userEvent.click(searchTopBtn);
 
     await waitFor(() => {
-      screen.getByTestId('search-input');
+      screen.getByTestId(searchInpt);
     });
 
-    const searchBtn = screen.getByTestId('exec-search-btn');
-    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId(searchBtn);
+    const searchInput = screen.getByTestId(searchInpt);
     const fLetterRadioBtn = screen.getByTestId('first-letter-search-radio');
     const nameRadioBtn = screen.getByTestId('name-search-radio');
 
     userEvent.type(searchInput, 'a');
     userEvent.click(fLetterRadioBtn);
-    userEvent.click(searchBtn);
+    userEvent.click(searchButton);
     await screen.findByText('Apple Frangipan Tart');
 
     userEvent.type(searchInput, 'Corba');
@@ -228,18 +232,18 @@ describe('Teste do componente Recipes', () => {
     await screen.findByText('Beef Asado');
     expect(screen.getAllByRole('heading', { level: 4 })).toHaveLength(12);
 
-    const searchTopBtn = screen.getByTestId('search-top-btn');
+    const searchTopBtn = screen.getByTestId(searchTopButton);
     userEvent.click(searchTopBtn);
     await waitFor(() => {
-      screen.getByTestId('search-input');
+      screen.getByTestId(searchInpt);
     });
-    const searchBtn = screen.getByTestId('exec-search-btn');
-    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId(searchBtn);
+    const searchInput = screen.getByTestId(searchInpt);
     const ingredientRadioBtn = screen.getByTestId('ingredient-search-radio');
 
     userEvent.type(searchInput, 'cheese');
     userEvent.click(ingredientRadioBtn);
-    userEvent.click(searchBtn);
+    userEvent.click(searchButton);
 
     await screen.findByText('Big Mac');
   });
@@ -253,19 +257,19 @@ describe('Teste do componente Recipes', () => {
     renderWithRouterAndRedux(<App />, {}, '/meals');
     const alertSpy = jest.spyOn(global, 'alert');
 
-    const searchTopBtn = screen.getByTestId('search-top-btn');
+    const searchTopBtn = screen.getByTestId(searchTopButton);
     userEvent.click(searchTopBtn);
 
     await waitFor(() => {
-      screen.getByTestId('search-input');
+      screen.getByTestId(searchInpt);
     });
-    const searchBtn = screen.getByTestId('exec-search-btn');
-    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId(searchBtn);
+    const searchInput = screen.getByTestId(searchInpt);
     const fLetterRadioBtn = screen.getByTestId('first-letter-search-radio');
 
     userEvent.type(searchInput, 'aa');
     userEvent.click(fLetterRadioBtn);
-    userEvent.click(searchBtn);
+    userEvent.click(searchButton);
     expect(alertSpy).toHaveBeenCalledWith('Your search must have only 1 (one) character');
   });
 
@@ -278,19 +282,19 @@ describe('Teste do componente Recipes', () => {
     renderWithRouterAndRedux(<App />, {}, '/meals');
     const alertSpy = jest.spyOn(global, 'alert');
 
-    const searchTopBtn = screen.getByTestId('search-top-btn');
+    const searchTopBtn = screen.getByTestId(searchTopButton);
     userEvent.click(searchTopBtn);
 
     await waitFor(() => {
-      screen.getByTestId('search-input');
+      screen.getByTestId(searchInpt);
     });
-    const searchBtn = screen.getByTestId('exec-search-btn');
-    const searchInput = screen.getByTestId('search-input');
+    const searchButton = screen.getByTestId(searchBtn);
+    const searchInput = screen.getByTestId(searchInpt);
     const nameRadioBtn = screen.getByTestId('name-search-radio');
 
     userEvent.type(searchInput, 'Barabam');
     userEvent.click(nameRadioBtn);
-    userEvent.click(searchBtn);
+    userEvent.click(searchButton);
     expect(alertSpy).toHaveBeenCalledWith('Sorry, we haven\'t found any recipes for these filters.');
   });
 
@@ -304,13 +308,13 @@ describe('Teste do componente Recipes', () => {
 
   //   const { history } = renderWithRouterAndRedux(<App />, {}, '/meals');
 
-  //   const searchTopBtn = screen.getByTestId('search-top-btn');
+  //   const searchTopBtn = screen.getByTestId(searchTopBtn);
   //   userEvent.click(searchTopBtn);
 
   //   await waitFor(() => {
   //     screen.getByTestId('search-input');
   //   });
-  //   const searchBtn = screen.getByTestId('exec-search-btn');
+  //   const searchBtn = screen.getByTestId(searchBtn);
   //   const searchInput = screen.getByTestId('search-input');
   //   const nameRadioBtn = screen.getByTestId('name-search-radio');
 
@@ -324,4 +328,51 @@ describe('Teste do componente Recipes', () => {
 
   //   // console.log(history.location.pathname);
   // })
+  describe('Testes da tela de Detalhes da Receita', () => {
+    test('Verifica se a imagem é a mesma da receita do Meal Details', async () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn()
+          .mockResolvedValue(mockCorba),
+      });
+
+      renderWithRouterAndRedux(<App />, {}, '/meals/52977');
+
+      await screen.findByText('Corba');
+      screen.getByRole('img', { name: /corba/i });
+      screen.getByRole('img', { name: /share button/i });
+      screen.getByRole('button', { name: /favorite icon/i });
+      screen.getByRole('button', { name: /continue recipe/i });
+    });
+  });
+
+  it('Verifica se a imagem é a mesma da receita do Drink Details', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn()
+        .mockResolvedValue(mockA1),
+    });
+
+    renderWithRouterAndRedux(<App />, {}, '/drinks/17222');
+
+    await screen.findByText('A1');
+    screen.getByRole('img', { name: /a1/i });
+    screen.getByRole('img', { name: /share button/i });
+    screen.getByRole('button', { name: /favorite icon/i });
+    screen.getByRole('button', { name: /continue recipe/i });
+    screen.getByText('Gin - 1 3/4 shot');
+    screen.getByTestId(/1-ingredient-name-and-measure/i);
+    expect(screen.getAllByTestId(/ingredient-name-and-measure/i)).toHaveLength(4);
+  });
+
+  it('Testa a funcionalidade da tela de progresso', async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn()
+        .mockResolvedValue(mockA1),
+    });
+
+    renderWithRouterAndRedux(<App />, {}, '/drinks/17222/in-progress');
+    await screen.findByText('A1');
+    screen.getByRole('img', { name: /a1/i });
+    screen.getByRole('button', { name: /favorite icon/i });
+    screen.getByRole('img', { name: /share button/i });
+  });
 });
