@@ -125,8 +125,4 @@ DoneRecipes.propTypes = {
   dispatch: PropTypes.func,
 }.isRequired;
 
-const mapStateToProps = (globalState) => ({
-  path: globalState.pathReducer.path,
-});
-
-export default connect(mapStateToProps)(DoneRecipes);
+export default connect()(DoneRecipes);
