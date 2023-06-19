@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { actionGetPath } from '../redux/actions';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const copy = require('clipboard-copy');
 
