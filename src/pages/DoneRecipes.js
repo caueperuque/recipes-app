@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { actionGetPath } from '../redux/actions';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const copy = require('clipboard-copy');
 
@@ -11,6 +12,7 @@ class DoneRecipes extends Component {
   state = {
     recipes: [],
     linkCopied: {},
+    filter: 'all',
   };
 
   componentDidMount() {
@@ -21,29 +23,56 @@ class DoneRecipes extends Component {
     console.log(path);
   }
 
+  handleFilter = (value) => {
+    this.setState({ filter: value });
+  };
+
   render() {
-    const { recipes, linkCopied } = this.state;
+    const { recipes, linkCopied, filter } = this.state;
+    let filteredRecipes = recipes;
+
+    if (filter === 'meal') {
+      filteredRecipes = recipes.filter((recipe) => recipe.type === 'meal');
+    } else if (filter === 'drink') {
+      filteredRecipes = recipes.filter((recipe) => recipe.type === 'drink');
+    }
+
     return (
       <div>
         <Header />
-        <button data-testid="filter-by-all-btn">
+        <button
+          data-testid="filter-by-all-btn"
+          onClick={ () => this.handleFilter('all') }
+        >
           All
         </button>
-        <button data-testid="filter-by-meal-btn">
+        <button
+          data-testid="filter-by-meal-btn"
+          onClick={ () => this.handleFilter('meal') }
+        >
           Meals
         </button>
-        <button data-testid="filter-by-drink-btn">
+        <button
+          data-testid="filter-by-drink-btn"
+          onClick={ () => this.handleFilter('drink') }
+        >
           Drinks
         </button>
         { recipes && (
           <div>
-            { recipes.map((recipe, index) => (
+            { filteredRecipes.map((recipe, index) => (
               <div key={ Math.random() }>
-                <img
-                  src={ recipe.image }
-                  alt={ recipe.name }
-                  data-testid={ `${index}-horizontal-image` }
-                />
+                <Link to={ `${recipe.type}s/${recipe.id}` }>
+                  <img
+                    src={ recipe.image }
+                    alt={ recipe.name }
+                    data-testid={ `${index}-horizontal-image` }
+                    width="100px"
+                  />
+                </Link>
+                <Link to={ `${recipe.type}s/${recipe.id}` }>
+                  <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
+                </Link>
                 { recipe.nationality ? (
                   <p data-testid={ `${index}-horizontal-top-text` }>
                     {`${recipe.nationality} - ${recipe.category}`}
@@ -53,7 +82,6 @@ class DoneRecipes extends Component {
                     {recipe.category}
                   </p>
                 ) }
-                <p data-testid={ `${index}-horizontal-name` }>{ recipe.name }</p>
                 <p data-testid={ `${index}-horizontal-done-date` }>{ recipe.doneDate }</p>
                 {
                   recipe.tags.slice(0, 2).map((tag) => (
