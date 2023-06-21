@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import recipeIcon from '../images/recipeIcon.png';
+import './style/Login.css';
 
 class Login extends Component {
   state = {
     email: '',
     password: '',
     isDisabled: true,
+    classBtn: 'btn btn-secondary',
   };
 
   verifyFields = () => {
@@ -16,6 +19,7 @@ class Login extends Component {
     const verifyEmail = emailRegex.test(email);
     this.setState({
       isDisabled: !(verifyEmail && verifyPassword),
+      classBtn: verifyEmail && verifyPassword ? 'btn btn-success' : 'btn btn-secondary',
     });
   };
 
@@ -34,40 +38,46 @@ class Login extends Component {
   };
 
   render() {
-    const { email, password, isDisabled } = this.state;
+    const { email, password, isDisabled, classBtn } = this.state;
 
     return (
-      <form
-        onSubmit={ this.handleSubmit }
-      >
-        <label>
-          User:
-          <input
-            type="email"
-            name="email"
-            data-testid="email-input"
-            value={ email }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            data-testid="password-input"
-            value={ password }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <button
-          data-testid="login-submit-btn"
-          disabled={ isDisabled }
-          // onClick={}
+      <div className="login__container-main">
+        <img src={ recipeIcon } alt="recipe" className="login__image" />
+        <form
+          onSubmit={ this.handleSubmit }
+          className="login__container-form"
         >
-          Enter
-        </button>
-      </form>
+          <label className="teste">
+            <input
+              placeholder="user"
+              type="email"
+              name="email"
+              data-testid="email-input"
+              className="form-control"
+              value={ email }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label>
+            <input
+              placeholder="password"
+              type="password"
+              name="password"
+              className="form-control"
+              data-testid="password-input"
+              value={ password }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <button
+            data-testid="login-submit-btn"
+            disabled={ isDisabled }
+            className={ classBtn }
+          >
+            Enter
+          </button>
+        </form>
+      </div>
     );
   }
 }
