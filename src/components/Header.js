@@ -55,7 +55,7 @@ class Header extends React.Component {
           : (
             <button
               onClick={ this.handleHide }
-              className='btn btn-primary'
+              className="btn btn-primary"
             >
               <img
                 data-testid="search-top-btn"
