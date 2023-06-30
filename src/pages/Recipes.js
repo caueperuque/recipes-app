@@ -6,6 +6,7 @@ import { actionGetPath } from '../redux/actions';
 import Footer from '../components/Footer';
 import '../index.css';
 import Header from '../components/Header';
+import './style/Recipes.css';
 
 class Recipes extends Component {
   state = {
@@ -132,38 +133,40 @@ class Recipes extends Component {
     const lastCategoryPosition = 5;
 
     return (
-      <main className="Main">
+      <main>
         <Header />
-        <aside>
-          <label htmlFor="All" data-testid="All-category-filter">
-            <input
-              type="checkbox"
-              name="category"
-              id="All"
-              checked={ selectedValue === 'All' }
-              onChange={ this.handleCategoryChange }
-            />
-            All
-          </label>
-          {categories
-            .slice(0, lastCategoryPosition)
-            .map(({ strCategory }, index) => (
-              <label
-                key={ index }
-                htmlFor={ strCategory }
-                data-testid={ `${strCategory}-category-filter` }
-              >
-                <input
-                  type="checkbox"
-                  name="category"
-                  id={ strCategory }
-                  checked={ selectedValue === `${strCategory}` }
-                  onChange={ this.handleCategoryChange }
-                />
-                {strCategory}
-              </label>
-            ))}
-        </aside>
+        <div className="recipes__container-main">
+          <aside className="recipes__cbx">
+            <label htmlFor="All" data-testid="All-category-filter">
+              <input
+                type="checkbox"
+                name="category"
+                id="All"
+                checked={ selectedValue === 'All' }
+                onChange={ this.handleCategoryChange }
+              />
+              All
+            </label>
+            {categories
+              .slice(0, lastCategoryPosition)
+              .map(({ strCategory }, index) => (
+                <label
+                  key={ index }
+                  htmlFor={ strCategory }
+                  data-testid={ `${strCategory}-category-filter` }
+                >
+                  <input
+                    type="checkbox"
+                    name="category"
+                    id={ strCategory }
+                    checked={ selectedValue === `${strCategory}` }
+                    onChange={ this.handleCategoryChange }
+                  />
+                  {strCategory}
+                </label>
+              ))}
+          </aside>
+        </div>
         <section className="recipes__content">
           {showRecipes ? (
             this.renderRecipes()

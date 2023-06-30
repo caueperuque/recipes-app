@@ -30,44 +30,6 @@ code {
     monospace;
 }
 
-.recipes__content{
-  display: flex;
-  flex-direction: row;
-}
-
-.recipe__section{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.Main aside{
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 250px;
-  padding: 5px;
-  margin: 5px;
-  flex-shrink: 0;
-}
-
-.recipe__card{
-  width: 200px;
-  border: 1px solid green;
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-  align-items: center;
-  text-align: center;
-  padding: 5px;
-}
-
-.recipe__img{
-  height: 150px;
-  /* padding: auto; */
-}
-
 .footer {
   bottom: 0;
   width: 100%;
