@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import shareIcon from '../images/shareIcon.svg';
 
-const copy = require('clipboard-copy');
+// const copy = require('clipboard-copy');
 
 class ShareRecipeBtn extends Component {
   state = {

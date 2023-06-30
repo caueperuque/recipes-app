@@ -6,7 +6,7 @@ import { actionGetPath } from '../redux/actions';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
-const copy = require('clipboard-copy');
+// const copy = require('clipboard-copy');
 
 class DoneRecipes extends Component {
   state = {

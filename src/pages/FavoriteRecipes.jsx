@@ -8,7 +8,7 @@ import shareIcon from '../images/shareIcon.svg';
 import iconWhite from '../images/whiteHeartIcon.svg';
 import iconBlack from '../images/blackHeartIcon.svg';
 
-const copy = require('clipboard-copy');
+// const copy = require('clipboard-copy');
 
 class FavoriteRecipes extends Component {
   state = {
