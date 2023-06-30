@@ -7,6 +7,7 @@ import StartRecipe from '../components/StartRecipe';
 import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
+import HeaderDetails from '../components/HeaderDetails';
 
 class MealDetails extends Component {
   state = {
@@ -44,6 +45,7 @@ class MealDetails extends Component {
 
     return (
       <div>
+        <HeaderDetails />
         {returnAPI && (
           <div>
             {returnAPI.map((recipe) => (

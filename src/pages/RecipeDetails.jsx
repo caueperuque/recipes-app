@@ -7,6 +7,7 @@ import StartRecipe from '../components/StartRecipe';
 import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
+import HeaderDetails from '../components/HeaderDetails';
 
 class DrinkDetails extends Component {
   state = {
@@ -45,6 +46,7 @@ class DrinkDetails extends Component {
     const lengthString = 13;
     return (
       <div>
+        <HeaderDetails />
         { returnAPI && (
           <div>
             { returnAPI.map((recipe) => (

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import './style/CardDetails.css';
 
 class CardDetails extends Component {
   render() {
@@ -11,13 +12,13 @@ class CardDetails extends Component {
       video,
     } = this.props;
     return (
-      <div>
-
-        <div>
+      <div className="card__container-main">
+        <div className="card__container-sub">
           <img
             src={ image }
             data-testid="recipe-photo"
             alt={ title }
+            className="card__image"
           />
           <h4 data-testid="recipe-title">{ title }</h4>
           <p data-testid="recipe-category">{category}</p>
