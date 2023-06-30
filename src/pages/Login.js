@@ -49,7 +49,7 @@ class Login extends Component {
         >
           <label className="teste">
             <input
-              placeholder="user"
+              placeholder="email"
               type="email"
               name="email"
               data-testid="email-input"
