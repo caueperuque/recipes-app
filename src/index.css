@@ -1,3 +1,19 @@
+/* 
+  #F23649 #49F23E 
+
+  #F23649 #F24936 #F2B236
+
+  #F23649 #DF1E38 #AA1121
+
+  #F23649 #F26B6E #F29DA0
+
+*/
+
+:root {
+  --background-login: #DF1E38;
+  --backgrund-header: #F23649;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

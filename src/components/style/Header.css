@@ -1,0 +1,12 @@
+.header__container-main {
+  padding: 10px;
+  text-align: center;
+  background-color: var(--backgrund-header);
+  color: white;
+}
+
+.header__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

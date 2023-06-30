@@ -1,0 +1,14 @@
+.searchbar__container-main {
+  border-top: 2px #AA1121 solid;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.searchbar__container-radios {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}

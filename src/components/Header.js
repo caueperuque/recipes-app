@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import SearchBar from './SearchBar';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import './style/Header.css';
 
 class Header extends React.Component {
   state = {
@@ -40,32 +41,34 @@ class Header extends React.Component {
     const { path } = this.props;
     const { hide } = this.state;
     return (
-      <>
+      <div className="header__container-main">
         <h2 data-testid="page-title">{this.getTitlePage()}</h2>
-        <Link to="/profile">
-          <img
-            data-testid="profile-top-btn"
-            src={ profileIcon }
-            alt="profile-ico"
-          />
-        </Link>
-        { (path === '/profile'
-          || path === '/done-recipes'
-          || path === '/favorite-recipes') ? ''
-          : (
-            <button
-              onClick={ this.handleHide }
-              className="btn btn-primary"
-            >
-              <img
-                data-testid="search-top-btn"
-                src={ searchIcon }
-                alt="search-ico"
-              />
-            </button>
-          )}
+        <nav className="header__nav">
+          <Link to="/profile">
+            <img
+              data-testid="profile-top-btn"
+              src={ profileIcon }
+              alt="profile-ico"
+            />
+          </Link>
+          { (path === '/profile'
+            || path === '/done-recipes'
+            || path === '/favorite-recipes') ? ''
+            : (
+              <button
+                onClick={ this.handleHide }
+                className="btn"
+              >
+                <img
+                  data-testid="search-top-btn"
+                  src={ searchIcon }
+                  alt="search-ico"
+                />
+              </button>
+            )}
+        </nav>
         {hide ? '' : <SearchBar />}
-      </>
+      </div>
 
     );
   }

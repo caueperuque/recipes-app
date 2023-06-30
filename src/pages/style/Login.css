@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: rgb(159, 106, 106);
+  background-color: var(--background-login);
   /* border: solid purple 3px; */
 }
 

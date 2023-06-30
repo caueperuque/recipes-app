@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { actionGetRecipes } from '../redux/actions';
+import './style/SearchBar.css';
 
 class SearchBar extends React.Component {
   state = {
@@ -54,51 +55,58 @@ class SearchBar extends React.Component {
     const { searchInput, valueRadio } = this.state;
 
     return (
-      <form onSubmit={ this.handleClick }>
+      <form
+        onSubmit={ this.handleClick }
+        className="searchbar__container-main input-group-sm"
+      >
         <input
           name="searchInput"
           value={ searchInput }
           data-testid="search-input"
           onChange={ this.handleChange }
+          className="form-control is-small"
+          placeholder="What do you want?"
           type="text"
         />
-        <label htmlFor="ingredientSearch">
-          <input
-            id="ingredientSearch"
-            name="radioInput"
-            onChange={ this.handleChecked }
-            value="ingredient"
-            data-testid="ingredient-search-radio"
-            type="radio"
-            checked={ valueRadio === 'ingredient' }
-          />
-          Ingredient
-        </label>
-        <label htmlFor="nameSearch">
-          <input
-            id="nameSearch"
-            name="radioInput"
-            value="name"
-            data-testid="name-search-radio"
-            type="radio"
-            checked={ valueRadio === 'name' }
-            onChange={ this.handleChecked }
-          />
-          Name
-        </label>
-        <label htmlFor="firstLetterSearch">
-          <input
-            id="firstLetterSearch"
-            name="radioInput"
-            value="firstLetter"
-            data-testid="first-letter-search-radio"
-            type="radio"
-            checked={ valueRadio === 'firstLetter' }
-            onChange={ this.handleChecked }
-          />
-          First letter
-        </label>
-        <button type="submit" data-testid="exec-search-btn">
+        <div className="searchbar__container-radios">
+          <label htmlFor="ingredientSearch">
+            <input
+              id="ingredientSearch"
+              name="radioInput"
+              onChange={ this.handleChecked }
+              value="ingredient"
+              data-testid="ingredient-search-radio"
+              type="radio"
+              checked={ valueRadio === 'ingredient' }
+            />
+            Ingredient
+          </label>
+          <label htmlFor="nameSearch">
+            <input
+              id="nameSearch"
+              name="radioInput"
+              value="name"
+              data-testid="name-search-radio"
+              type="radio"
+              checked={ valueRadio === 'name' }
+              onChange={ this.handleChecked }
+            />
+            Name
+          </label>
+          <label htmlFor="firstLetterSearch">
+            <input
+              id="firstLetterSearch"
+              name="radioInput"
+              value="firstLetter"
+              data-testid="first-letter-search-radio"
+              type="radio"
+              checked={ valueRadio === 'firstLetter' }
+              onChange={ this.handleChecked }
+            />
+            First letter
+          </label>
+        </div>
+        <button type="submit" data-testid="exec-search-btn" className="btn btn-success">
           Search
         </button>
       </form>
