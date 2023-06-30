@@ -9,16 +9,19 @@
 .recipes__cbx {
     /* border: 1px solid black; */
     display: flex;
-    width: 80%;
+    width: 90%;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
     flex-wrap: wrap;
-    font-size: 25px;
+    font-size: 17px;
 }
 
 .recipes__content{
   display: flex;
   flex-direction: row;
+  /* border: solid red 30px; */
+  margin-bottom: 85px;
 }
 
 .recipe__section{
