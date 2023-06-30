@@ -44,7 +44,7 @@ class MealDetails extends Component {
     console.log(recommendation);
 
     return (
-      <div>
+      <div className="card__container-main">
         <HeaderDetails />
         {returnAPI && (
           <div>

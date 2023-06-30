@@ -22,16 +22,22 @@ class CardDetails extends Component {
           />
           <h4 data-testid="recipe-title">{ title }</h4>
           <p data-testid="recipe-category">{category}</p>
+          <hr className="card__division" />
           <p data-testid="instructions">{instructions}</p>
+          <hr className="card__division" />
           { video && (
-            <iframe
-              data-testid="video"
-              width="560"
-              height="315"
-              src={ video }
-              title={ title }
-            />
+            <>
+              <iframe
+                data-testid="video"
+                width="300"
+                height="300"
+                src={ video }
+                title={ title }
+              />
+              <hr className="card__division" />
+            </>
           ) }
+
         </div>
       </div>
     );

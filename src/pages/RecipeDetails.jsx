@@ -45,7 +45,7 @@ class DrinkDetails extends Component {
     const { returnAPI, recommendation } = this.state;
     const lengthString = 13;
     return (
-      <div>
+      <div className="card__container-main">
         <HeaderDetails />
         { returnAPI && (
           <div>
