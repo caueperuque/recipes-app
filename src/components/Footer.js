@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import mealIcon from '../images/mealIcon.svg';
 import drinkIcon from '../images/drinkIcon.svg';
-import '../index.css';
+import './style/Footer.css';
 
 class Footer extends React.Component {
   render() {
@@ -14,12 +14,14 @@ class Footer extends React.Component {
             src={ drinkIcon }
             alt="Drink Icon"
             data-testid="drinks-bottom-btn"
+            className="recipes__drink-icon"
           />
         </Link>
         <Link to="/meals">
           <img
             src={ mealIcon }
             alt="Meal Icon"
+            className="recipes__meal-icon"
             data-testid="meals-bottom-btn"
           />
         </Link>

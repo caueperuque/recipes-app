@@ -11,7 +11,7 @@
 
 :root {
   --background-login: #DF1E38;
-  --backgrund-header: #F23649;
+  --background-header: #F23649;
 }
 
 body {
@@ -28,19 +28,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-.footer {
-  bottom: 0;
-  width: 100%;
-  position: fixed;
-  display: flex;
-  justify-content: flex-end;
-  padding: 20px;
-  /* border: solid 2px red;
-  position: fixed;
-  padding: 10px;
-  width: 100%; */
 }
 
 .recommendation-container {
