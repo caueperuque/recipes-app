@@ -26,6 +26,7 @@ class Recipes extends Component {
   componentDidUpdate(prevProps) {
     const { recipes } = this.props;
     const { showRecipes } = this.state;
+    // console.log(recipes);
     if (recipes === null && !showRecipes) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
     } else if (recipes !== prevProps.recipes && recipes.length === 1 && !showRecipes) {

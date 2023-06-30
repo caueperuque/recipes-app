@@ -12,6 +12,15 @@ class Header extends React.Component {
     hide: true,
   };
 
+  componentDidUpdate(prevProps) {
+    const { path } = this.props;
+    const { path: prevPath } = prevProps;
+
+    if (path !== prevPath) {
+      document.title = this.getTitlePage();
+    }
+  }
+
   handleHide = () => {
     const { hide } = this.state;
     this.setState({

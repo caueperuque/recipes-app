@@ -6,10 +6,17 @@ import drinkIcon from '../images/drinkIcon.svg';
 import './style/Footer.css';
 
 class Footer extends React.Component {
+  handleLinkClick = () => {
+    const { location } = window;
+    setTimeout(() => {
+      location.reload();
+    }, 100);
+  };
+
   render() {
     return (
       <footer data-testid="footer" className="footer">
-        <Link to="/drinks">
+        <Link to="/drinks" onClick={ this.handleLinkClick }>
           <img
             src={ drinkIcon }
             alt="Drink Icon"
@@ -17,7 +24,7 @@ class Footer extends React.Component {
             className="recipes__drink-icon"
           />
         </Link>
-        <Link to="/meals">
+        <Link to="/meals" onClick={ this.handleLinkClick }>
           <img
             src={ mealIcon }
             alt="Meal Icon"
