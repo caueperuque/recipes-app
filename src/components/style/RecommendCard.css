@@ -1,0 +1,26 @@
+.recommendation-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  background-color: var(--background-login);
+  padding-top: 30px;
+}
+
+.recommendation-scroll {
+  display: inline-block;
+}
+
+.recommendation-card {
+  display: inline-block;
+  text-align: center;
+  width: 180px;
+}
+
+.recommendation-img {
+  width: 80%;
+  border-radius: 10px;
+}
+
+.recommendation-title {
+  padding: 10px;
+  color: rgb(255, 255, 255);
+}

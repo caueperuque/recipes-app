@@ -59,6 +59,7 @@ class DrinkDetails extends Component {
               />
             )) }
             <ul>
+              <h1>Ingredients</h1>
               {returnAPI.map((recipe) => {
                 let counter = 0;
 
@@ -95,6 +96,7 @@ class DrinkDetails extends Component {
                 });
               })}
             </ul>
+            <hr className="recipe__division" />
           </div>
         ) }
         { recommendation && (

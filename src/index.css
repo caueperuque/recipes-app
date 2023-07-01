@@ -30,30 +30,6 @@ code {
     monospace;
 }
 
-.recommendation-container {
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.recommendation-scroll {
-  display: inline-block;
-}
-
-.recommendation-card {
-  display: inline-block;
-  margin-right: 10px;
-  width: 200px; /* Ajuste o tamanho conforme necessário */
-}
-
-.recommendation-img {
-  width: 100%;
-  height: auto;
-}
-
-.recommendation-title {
-  margin-top: 5px;
-}
-
 .startrecipe__button {
   position: fixed;
   bottom: 0;
