@@ -8,6 +8,7 @@ import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 import HeaderDetails from '../components/HeaderDetails';
+import './style/Details.css';
 
 class MealDetails extends Component {
   state = {
@@ -103,8 +104,10 @@ class MealDetails extends Component {
           <RecommendCard cards={ recommendation } />
         ) }
         <StartRecipe />
-        <ShareRecipeBtn />
-        <FavoriteRecipeBtn />
+        <div className="details__button">
+          <ShareRecipeBtn />
+          <FavoriteRecipeBtn />
+        </div>
       </div>
     );
   }

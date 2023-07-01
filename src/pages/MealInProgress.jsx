@@ -167,10 +167,11 @@ class MealInProgress extends Component {
               return null;
             });
           })}
-
-        <FavoriteRecipeBtn />
-        <ShareRecipeBtn />
-        <FinishBtn isDisabled={ !allIngredientsChecked } />
+        <div className="details__button">
+          <FavoriteRecipeBtn />
+          <ShareRecipeBtn />
+          <FinishBtn isDisabled={ !allIngredientsChecked } />
+        </div>
       </div>
     );
   }

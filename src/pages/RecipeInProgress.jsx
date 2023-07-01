@@ -6,6 +6,7 @@ import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import FinishBtn from '../components/FinishBtn';
 import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
+import './style/InProgress.css';
 
 class DrinkInProgress extends Component {
   state = {
@@ -176,9 +177,11 @@ class DrinkInProgress extends Component {
             });
           })}
 
-        <FavoriteRecipeBtn />
-        <ShareRecipeBtn />
-        <FinishBtn isDisabled={ isDisable } />
+        <div className="details__button">
+          <ShareRecipeBtn />
+          <FavoriteRecipeBtn />
+          <FinishBtn isDisabled={ isDisable } />
+        </div>
       </div>
     );
   }

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import shareIcon from '../images/shareIcon.svg';
+import './style/ButtonsSoF.css';
 
 // const copy = require('clipboard-copy');
 
@@ -26,7 +27,11 @@ class ShareRecipeBtn extends Component {
     const { hidden } = this.state;
     return (
       <div>
-        <button data-testid="share-btn" onClick={ this.handleClick }>
+        <button
+          data-testid="share-btn"
+          onClick={ this.handleClick }
+          className="btn button__SoF"
+        >
           <img src={ shareIcon } alt="share button" />
         </button>
         { hidden && (

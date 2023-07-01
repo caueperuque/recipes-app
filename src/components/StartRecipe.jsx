@@ -5,11 +5,6 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { actionIsInProgress } from '../redux/actions';
 
 class StartRecipe extends Component {
-  componentDidUpdate() {
-    const { path } = this.props;
-    console.log(path);
-  }
-
   startClick = () => {
     const { dispatch, progress } = this.props;
     dispatch(actionIsInProgress(!progress));
@@ -31,10 +26,10 @@ class StartRecipe extends Component {
           <Link to={ `${path}/in-progress` }>
             <button
               data-testid="start-recipe-btn"
-              className="startrecipe__button"
+              className="startrecipe__button btn button__SoF"
               onClick={ this.startClick }
             >
-              { !progress ? 'Start Recipe' : 'Continue Recipe' }
+              { !progress ? 'Continue Recipe' : 'Start Recipe' }
             </button>
           </Link>
         </div>

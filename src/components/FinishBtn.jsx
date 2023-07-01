@@ -35,6 +35,7 @@ class FinishBtn extends Component {
       <div>
         <Link to="/done-recipes">
           <button
+            className="btn btn-info button__SoF"
             data-testid="finish-recipe-btn"
             disabled={ isDisabled }
             onClick={ this.handleClick }

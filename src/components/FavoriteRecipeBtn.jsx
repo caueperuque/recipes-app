@@ -57,7 +57,12 @@ class FavoriteRecipeBtn extends Component {
     const { iconHeart } = this.state;
     return (
       <div>
-        <button data-testid="favorite-btn" onClick={ this.handleClick } src={ iconHeart }>
+        <button
+          data-testid="favorite-btn"
+          onClick={ this.handleClick }
+          src={ iconHeart }
+          className="btn button__SoF"
+        >
           <img src={ iconHeart } alt="favorite icon" />
         </button>
       </div>

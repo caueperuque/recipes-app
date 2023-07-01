@@ -77,6 +77,7 @@ class Header extends React.Component {
             )}
         </nav>
         {hide ? '' : <SearchBar />}
+        <hr />
       </div>
 
     );

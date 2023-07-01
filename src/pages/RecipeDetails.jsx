@@ -103,8 +103,10 @@ class DrinkDetails extends Component {
           <RecommendCard cards={ recommendation } />
         ) }
         <StartRecipe />
-        <ShareRecipeBtn />
-        <FavoriteRecipeBtn />
+        <div className="details__button">
+          <ShareRecipeBtn />
+          <FavoriteRecipeBtn />
+        </div>
       </div>
     );
   }
