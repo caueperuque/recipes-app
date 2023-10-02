@@ -31,7 +31,7 @@ class CardDetails extends Component {
                 data-testid="video"
                 width="300"
                 height="300"
-                src={ video }
+                src={ video && video.replace('watch?v=', 'embed/') }
                 title={ title }
               />
               <hr className="card__division" />
