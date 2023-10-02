@@ -5,7 +5,7 @@
   position: fixed;
   display: flex;
   justify-content: space-between;
-  background-color: var(--background-header);
+  background-color: #cd2e3e;
 }
 
 .recipes__meal-icon, .recipes__drink-icon {
