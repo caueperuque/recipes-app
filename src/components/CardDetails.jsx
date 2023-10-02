@@ -23,7 +23,9 @@ class CardDetails extends Component {
           <h4 data-testid="recipe-title">{ title }</h4>
           <p data-testid="recipe-category">{category}</p>
           <hr className="card__division" />
-          <p data-testid="instructions">{instructions}</p>
+          <p data-testid="instructions" className="cardDetails__instructions">
+            {instructions}
+          </p>
           <hr className="card__division" />
           { video && (
             <>

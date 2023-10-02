@@ -6,6 +6,7 @@ import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import FinishBtn from '../components/FinishBtn';
+import Header from '../components/Header';
 
 class MealInProgress extends Component {
   state = {
@@ -111,23 +112,25 @@ class MealInProgress extends Component {
   render() {
     const { returnAPI, checkedIngredients, allIngredientsChecked } = this.state;
     return (
-      <div>
-        {returnAPI ? (
-          <>
-            {returnAPI.map((recipe) => (
-              <CardDetails
-                key={ Math.random() }
-                image={ recipe.strMealThumb }
-                title={ recipe.strMeal }
-                category={ recipe.strCategory }
-                instructions={ recipe.strInstructions }
-              />
-            ))}
-          </>
-        ) : (
-          <p>Loading...</p>
-        )}
-        {returnAPI
+      <>
+        <Header />
+        <div>
+          {returnAPI ? (
+            <>
+              {returnAPI.map((recipe) => (
+                <CardDetails
+                  key={ Math.random() }
+                  image={ recipe.strMealThumb }
+                  title={ recipe.strMeal }
+                  category={ recipe.strCategory }
+                  instructions={ recipe.strInstructions }
+                />
+              ))}
+            </>
+          ) : (
+            <p>Loading...</p>
+          )}
+          {returnAPI
           && returnAPI.map((recipe) => {
             let counter = 0;
 
@@ -147,7 +150,7 @@ class MealInProgress extends Component {
                 const isChecked = checkedIngredients[index] || false;
 
                 return (
-                  <div key={ key }>
+                  <div className="inProgress__container" key={ key }>
                     <label
                       data-testid={ testDataId }
                       className={ isChecked ? 'checked' : '' }
@@ -167,12 +170,13 @@ class MealInProgress extends Component {
               return null;
             });
           })}
-        <div className="details__button">
-          <FavoriteRecipeBtn />
-          <ShareRecipeBtn />
-          <FinishBtn isDisabled={ !allIngredientsChecked } />
+          <div className="details__button">
+            <FavoriteRecipeBtn />
+            <ShareRecipeBtn />
+            <FinishBtn isDisabled={ !allIngredientsChecked } />
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

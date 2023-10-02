@@ -8,6 +8,7 @@ import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import FavoriteRecipeBtn from '../components/FavoriteRecipeBtn';
 import HeaderDetails from '../components/HeaderDetails';
+import Header from '../components/Header';
 
 class DrinkDetails extends Component {
   state = {
@@ -45,31 +46,44 @@ class DrinkDetails extends Component {
     const { returnAPI, recommendation } = this.state;
     const lengthString = 13;
     return (
-      <div className="card__container-main">
-        <HeaderDetails />
-        { returnAPI && (
-          <div>
-            { returnAPI.map((recipe) => (
-              <CardDetails
-                key={ Math.random() }
-                title={ recipe.strDrink }
-                image={ recipe.strDrinkThumb }
-                category={ recipe.strAlcoholic }
-                instructions={ recipe.strInstructions }
-              />
-            )) }
-            <ul>
-              <h1>Ingredients</h1>
-              {returnAPI.map((recipe) => {
-                let counter = 0;
+      <>
+        <Header />
+        <div className="card__container-main">
+          <HeaderDetails />
+          { returnAPI && (
+            <div>
+              { returnAPI.map((recipe) => (
+                <CardDetails
+                  key={ Math.random() }
+                  title={ recipe.strDrink }
+                  image={ recipe.strDrinkThumb }
+                  category={ recipe.strAlcoholic }
+                  instructions={ recipe.strInstructions }
+                />
+              )) }
+              <ul>
+                <h1>Ingredients</h1>
+                {returnAPI.map((recipe) => {
+                  let counter = 0;
 
-                return Object.entries(recipe).map(([key, value]) => {
-                  if (key.includes('strIngredient') && value) {
-                    const measureKey = `strMeasure${key.slice(lengthString)}`;
-                    const measureValue = recipe[measureKey];
+                  return Object.entries(recipe).map(([key, value]) => {
+                    if (key.includes('strIngredient') && value) {
+                      const measureKey = `strMeasure${key.slice(lengthString)}`;
+                      const measureValue = recipe[measureKey];
 
-                    if (measureValue && measureValue !== ' ') {
-                      const ingredientWithMeasure = `${value} - ${measureValue}`;
+                      if (measureValue && measureValue !== ' ') {
+                        const ingredientWithMeasure = `${value} - ${measureValue}`;
+
+                        const testDataId = `${counter}-ingredient-name-and-measure`;
+
+                        counter += 1;
+
+                        return (
+                          <li key={ key } data-testid={ testDataId }>
+                            {ingredientWithMeasure}
+                          </li>
+                        );
+                      }
 
                       const testDataId = `${counter}-ingredient-name-and-measure`;
 
@@ -77,37 +91,27 @@ class DrinkDetails extends Component {
 
                       return (
                         <li key={ key } data-testid={ testDataId }>
-                          {ingredientWithMeasure}
+                          {value}
                         </li>
                       );
                     }
-
-                    const testDataId = `${counter}-ingredient-name-and-measure`;
-
-                    counter += 1;
-
-                    return (
-                      <li key={ key } data-testid={ testDataId }>
-                        {value}
-                      </li>
-                    );
-                  }
-                  return null;
-                });
-              })}
-            </ul>
-            <hr className="recipe__division" />
+                    return null;
+                  });
+                })}
+              </ul>
+              <hr className="recipe__division" />
+            </div>
+          ) }
+          { recommendation && (
+            <RecommendCard cards={ recommendation } />
+          ) }
+          <StartRecipe />
+          <div className="details__button">
+            <ShareRecipeBtn />
+            <FavoriteRecipeBtn />
           </div>
-        ) }
-        { recommendation && (
-          <RecommendCard cards={ recommendation } />
-        ) }
-        <StartRecipe />
-        <div className="details__button">
-          <ShareRecipeBtn />
-          <FavoriteRecipeBtn />
         </div>
-      </div>
+      </>
     );
   }
 }

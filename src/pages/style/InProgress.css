@@ -2,3 +2,8 @@ body {
   background-color: var(--background-header);
   color: white;
 }
+
+.inProgress__container label{
+  /* border: 2px black solid; */
+  margin: 10px;
+}

@@ -7,6 +7,7 @@ import ShareRecipeBtn from '../components/ShareRecipeBtn';
 import FinishBtn from '../components/FinishBtn';
 import { actionGetPath, actionGetOnlyRecipe } from '../redux/actions';
 import './style/InProgress.css';
+import Header from '../components/Header';
 
 class DrinkInProgress extends Component {
   state = {
@@ -120,24 +121,26 @@ class DrinkInProgress extends Component {
   render() {
     const { returnAPI, checkedIngredients, isDisable } = this.state;
     return (
-      <div>
-        {returnAPI ? (
-          <>
-            {returnAPI.map((recipe) => (
-              <CardDetails
-                key={ Math.random() }
-                image={ recipe.strDrinkThumb }
-                title={ recipe.strDrink }
-                category={ recipe.strCategory }
-                instructions={ recipe.strInstructions }
-              />
-            ))}
-          </>
-        ) : (
-          <p>Loading...</p>
-        )}
+      <>
+        <Header />
+        <div>
+          {returnAPI ? (
+            <>
+              {returnAPI.map((recipe) => (
+                <CardDetails
+                  key={ Math.random() }
+                  image={ recipe.strDrinkThumb }
+                  title={ recipe.strDrink }
+                  category={ recipe.strCategory }
+                  instructions={ recipe.strInstructions }
+                />
+              ))}
+            </>
+          ) : (
+            <p>Loading...</p>
+          )}
 
-        {returnAPI
+          {returnAPI
           && returnAPI.map((recipe) => {
             let counter = 0;
 
@@ -155,7 +158,7 @@ class DrinkInProgress extends Component {
                 counter += 1;
 
                 return (
-                  <div key={ key }>
+                  <div className="inProgress__container" key={ key }>
                     <label
                       data-testid={ testDataId }
                       className={ checkedIngredients[index] ? 'checked' : '' }
@@ -177,12 +180,13 @@ class DrinkInProgress extends Component {
             });
           })}
 
-        <div className="details__button">
-          <ShareRecipeBtn />
-          <FavoriteRecipeBtn />
-          <FinishBtn isDisabled={ isDisable } />
+          <div className="details__button">
+            <ShareRecipeBtn />
+            <FavoriteRecipeBtn />
+            <FinishBtn isDisabled={ isDisable } />
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

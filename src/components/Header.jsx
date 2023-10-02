@@ -49,6 +49,7 @@ class Header extends React.Component {
   render() {
     const { path } = this.props;
     const { hide } = this.state;
+    const pathString = 3;
     return (
       <div className="header__container-main">
         <h2 data-testid="page-title">{this.getTitlePage()}</h2>
@@ -62,7 +63,10 @@ class Header extends React.Component {
           </Link>
           { (path === '/profile'
             || path === '/done-recipes'
-            || path === '/favorite-recipes') ? ''
+            || path === '/favorite-recipes'
+            || path.split('/').includes('in-progress')
+            || path.split('/').length === pathString
+          ) ? (<Link to="/meals" className="oi"> Home </Link>)
             : (
               <button
                 onClick={ this.handleHide }
@@ -79,7 +83,6 @@ class Header extends React.Component {
         {hide ? '' : <SearchBar />}
         <hr />
       </div>
-
     );
   }
 }
